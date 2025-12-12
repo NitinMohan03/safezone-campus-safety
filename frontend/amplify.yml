@@ -3,16 +3,15 @@ frontend:
   phases:
     preBuild:
       commands:
-        - npm ci
+        - cd frontend
+        - npm install
     build:
       commands:
         - npm run build
-        # Copy db.json to dist so it's served as a static file
-        - cp db.json dist/db.json
   artifacts:
-    baseDirectory: dist
+    baseDirectory: frontend/dist
     files:
       - '**/*'
   cache:
     paths:
-      - node_modules/**/*
+      - frontend/node_modules/**/*

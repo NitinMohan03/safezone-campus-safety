@@ -35,3 +35,9 @@ __pycache__/
 /blob-report/
 /playwright/.cache/
 /playwright/.auth/
+
+# Claude Code & tooling
+.claude/
+.impeccable/
+DESIGN.md
+PRODUCT.md

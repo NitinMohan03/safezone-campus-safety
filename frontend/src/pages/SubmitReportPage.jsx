@@ -469,31 +469,27 @@ function SubmitReportPage() {
           {toastMessage}
         </div>
       )}
-      <div className="relative mx-auto flex max-w-3xl flex-col gap-8 overflow-hidden rounded-[24px] border border-slate-200 bg-white p-8 shadow-[0_24px_52px_rgba(15,23,42,0.08)] sm:p-10">
-        <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-primary-500/10 to-sky-500/5" />
-        <div className="relative z-10 flex flex-col gap-4 text-center md:flex-row md:items-start md:justify-between md:text-left">
-          <div className="space-y-3 md:max-w-2xl">
-            <h2 className="text-3xl font-bold text-slate-950">
-              {isEditing
-                ? "Update Incident Report"
-                : "Submit a New Incident Report"}
-            </h2>
-            <p className="text-base text-slate-700">
-              {isEditing
-                ? "Review the requested changes, update the details, and resubmit to SafeZone."
-                : "Help keep the community safe by reporting an incident."}
-            </p>
-          </div>
+      <div className="mx-auto flex max-w-3xl flex-col gap-8 rounded-[24px] border border-slate-200 bg-white p-8 shadow-[0_24px_52px_rgba(15,23,42,0.08)] sm:p-10">
+        <div className="flex flex-col gap-3">
+          <h1 className="text-3xl font-bold text-slate-950 [text-wrap:balance]">
+            {isEditing
+              ? "Update Incident Report"
+              : "Submit a New Incident Report"}
+          </h1>
+          <p className="max-w-2xl text-base text-slate-700 [text-wrap:pretty]">
+            {isEditing
+              ? "Review the requested changes, update the details, and resubmit to SafeZone."
+              : "Help keep the community safe by reporting an incident."}
+          </p>
         </div>
 
         {dailyLimitReached && !isEditing && (
-          <div className="rounded-2xl border border-amber-300/60 bg-amber-50 px-4 py-3 text-sm font-semibold text-amber-800">
-            You’ve reached the daily limit of 3 reports. Please try again
-            tomorrow.
+          <div className="rounded-2xl border border-amber-300/60 bg-amber-50 px-4 py-3 text-sm font-semibold text-amber-800" role="alert">
+            You’ve reached the daily limit of 3 reports. Please try again tomorrow.
           </div>
         )}
 
-        <form onSubmit={handleSubmit} className="relative z-10 grid gap-6">
+        <form onSubmit={handleSubmit} className="grid gap-6">
           <ReportForm
             values={{
               title: formData.title,
@@ -544,7 +540,7 @@ function SubmitReportPage() {
                     type="button"
                     onClick={() => toggleIncidentType(value)}
                     className={[
-                      "rounded-xl border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-700 transition duration-200 hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-60",
+                      "rounded-xl border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-700 transition duration-200 hover:border-slate-300 hover:bg-slate-200 disabled:cursor-not-allowed disabled:opacity-60",
                       isSelected
                         ? "border-primary-500 bg-primary-600 text-white shadow-[0_0_0_3px_rgba(37,99,235,0.16)]"
                         : "bg-slate-100",
@@ -589,7 +585,7 @@ function SubmitReportPage() {
                       type="button"
                       onClick={() => removeExistingAttachment(url)}
                       disabled={disableForm}
-                      className="rounded-full bg-transparent p-0 text-base leading-none text-slate-600 transition hover:text-rose-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-200"
+                      className="inline-flex h-5 w-5 items-center justify-center rounded-full text-sm leading-none text-slate-500 transition hover:bg-rose-50 hover:text-rose-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-200"
                     >
                       ×
                     </button>
@@ -607,7 +603,7 @@ function SubmitReportPage() {
                       type="button"
                       onClick={() => removePendingFile(index)}
                       disabled={disableForm}
-                      className="rounded-full bg-transparent p-0 text-base leading-none text-primary-700 transition hover:text-rose-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-200"
+                      className="inline-flex h-5 w-5 items-center justify-center rounded-full text-sm leading-none text-primary-600 transition hover:bg-rose-50 hover:text-rose-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-200"
                     >
                       ×
                     </button>
@@ -659,12 +655,12 @@ function SubmitReportPage() {
           </div>
 
           {error && (
-            <div className="rounded-2xl border border-rose-300/60 bg-rose-200/30 px-4 py-3 text-sm font-semibold text-rose-700">
+            <div className="rounded-2xl border border-rose-300/60 bg-rose-50 px-4 py-3 text-sm font-semibold text-rose-700" role="alert">
               {error}
             </div>
           )}
           {successMessage && (
-            <div className="rounded-2xl border border-emerald-300/60 bg-emerald-200/30 px-4 py-3 text-sm font-semibold text-emerald-700">
+            <div className="rounded-2xl border border-emerald-300/60 bg-emerald-50 px-4 py-3 text-sm font-semibold text-emerald-700" role="status">
               {successMessage}
             </div>
           )}

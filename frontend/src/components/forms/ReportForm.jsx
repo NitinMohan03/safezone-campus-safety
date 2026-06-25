@@ -1,4 +1,3 @@
-import React from "react";
 import PropTypes from "prop-types";
 const SEVERITY_OPTIONS = [
   { value: "low", label: "Low" },
@@ -34,7 +33,7 @@ function ReportForm({ values, onChange, disabled }) {
           onChange={handleInputChange("title")}
           required
           disabled={disabled}
-          className="w-full rounded-xl border border-slate-200 bg-white/90 px-4 py-3 text-base shadow-sm transition-colors duration-200 focus:border-primary-400 focus:outline-none focus:ring-4 focus:ring-primary-200 disabled:cursor-not-allowed disabled:opacity-60"
+          className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-base shadow-sm transition-colors duration-200 focus:border-primary-400 focus:outline-none focus:ring-4 focus:ring-primary-200 disabled:cursor-not-allowed disabled:opacity-60"
         />
       </div>
 
@@ -53,7 +52,7 @@ function ReportForm({ values, onChange, disabled }) {
           onChange={handleInputChange("category")}
           required
           disabled={disabled}
-          className="w-full rounded-xl border border-slate-200 bg-white/90 px-4 py-3 text-base shadow-sm transition-colors duration-200 focus:border-primary-400 focus:outline-none focus:ring-4 focus:ring-primary-200 disabled:cursor-not-allowed disabled:opacity-60"
+          className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-base shadow-sm transition-colors duration-200 focus:border-primary-400 focus:outline-none focus:ring-4 focus:ring-primary-200 disabled:cursor-not-allowed disabled:opacity-60"
         />
       </div>
 
@@ -72,7 +71,7 @@ function ReportForm({ values, onChange, disabled }) {
           onChange={handleInputChange("description")}
           required
           disabled={disabled}
-          className="w-full min-h-[140px] resize-y rounded-xl border border-slate-200 bg-white/90 px-4 py-3 text-base shadow-sm transition-colors duration-200 focus:border-primary-400 focus:outline-none focus:ring-4 focus:ring-primary-200 disabled:cursor-not-allowed disabled:opacity-60"
+          className="w-full min-h-[140px] resize-y rounded-xl border border-slate-200 bg-white px-4 py-3 text-base shadow-sm transition-colors duration-200 focus:border-primary-400 focus:outline-none focus:ring-4 focus:ring-primary-200 disabled:cursor-not-allowed disabled:opacity-60"
         />
       </div>
 

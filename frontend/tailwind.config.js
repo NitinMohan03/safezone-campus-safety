@@ -38,7 +38,7 @@ export default {
           "radial-gradient(circle at top, rgba(0, 123, 255, 0.08), transparent 55%)",
       },
       maxWidth: {
-        "content": "1100px",
+        "content": "1280px",
       },
       keyframes: {
         ticker: {

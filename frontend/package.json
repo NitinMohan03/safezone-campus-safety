@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "dev:json": "VITE_API_MODE=json concurrently \"vite\" \"npm run json-server\"",
+    "dev:json": "concurrently \"vite\" \"npm run json-server\"",
     "dev:django": "VITE_API_MODE=django vite",
     "json-server": "json-server --watch db.json --port 5001",
     "build": "vite build",

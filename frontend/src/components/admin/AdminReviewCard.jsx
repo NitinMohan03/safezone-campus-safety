@@ -26,7 +26,7 @@ export function AdminReviewCard({
     >
       <header className="flex flex-wrap items-center justify-between gap-4">
         <div className="flex flex-wrap items-center gap-3">
-          <span className="inline-flex items-center rounded-full bg-primary-100 px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-primary-700">
+          <span className="inline-flex items-center rounded-full bg-primary-100 px-3 py-1 text-xs font-semibold text-primary-700">
             {statusLabel}
           </span>
           <time className="text-sm text-slate-500">
@@ -35,7 +35,7 @@ export function AdminReviewCard({
         </div>
         <span
           className={[
-            "rounded-full px-3 py-1 text-xs font-bold tracking-[0.3em] text-white",
+            "rounded-full px-3 py-0.5 text-xs font-bold text-white",
             severityDecorators[severityKey]?.badge ||
               "bg-slate-800 text-white",
           ]
@@ -46,7 +46,7 @@ export function AdminReviewCard({
         </span>
       </header>
 
-      <h2 className="text-2xl font-semibold text-slate-900">
+      <h2 className="text-2xl font-semibold text-slate-900 [text-wrap:balance]">
         {incident.title}
       </h2>
       <p className="text-slate-700">{incident.description}</p>

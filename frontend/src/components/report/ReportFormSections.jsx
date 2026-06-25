@@ -3,7 +3,7 @@ import LocationSearchResult from "../ui/LocationSearchResult";
 export function ToastMessage({ message }) {
   if (!message) return null;
   return (
-    <div className="fixed right-4 top-4 z-50 rounded-2xl border border-amber-200 bg-white px-4 py-3 text-sm font-semibold text-amber-800 shadow-xl shadow-amber-500/20">
+    <div className="fixed right-4 top-4 z-50 rounded-2xl border border-amber-200 bg-white px-4 py-3 text-sm font-semibold text-amber-800 shadow-xl">
       {message}
     </div>
   );
@@ -33,7 +33,7 @@ export function LocationField({
         className="w-full rounded-xl border border-slate-200 bg-white/90 px-4 py-3 text-base shadow-sm transition focus:border-primary-400 focus:outline-none focus:ring-4 focus:ring-primary-200 disabled:cursor-not-allowed disabled:opacity-60"
       />
       {suggestions.length > 0 && (
-        <ul className="absolute left-0 right-0 top-[calc(100%+0.25rem)] z-20 max-h-56 list-none overflow-y-auto rounded-2xl border border-slate-200 bg-white/95 p-0 shadow-2xl">
+        <ul className="absolute left-0 right-0 top-[calc(100%+0.25rem)] z-20 max-h-56 list-none overflow-y-auto rounded-2xl border border-slate-200 bg-white p-0 shadow-2xl">
           {suggestions.map((place) => (
             <LocationSearchResult
               key={place.mapbox_id || place.id}
@@ -113,7 +113,7 @@ export function AttachmentPicker({
           {existingAttachments.map((url) => (
             <div
               key={url}
-              className="inline-flex items-center gap-2 rounded-full bg-cyan-900/10 px-3 py-1 text-xs font-medium text-slate-800"
+              className="inline-flex items-center gap-2 rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-800"
             >
               <span>{url.split("/").pop()}</span>
               <button

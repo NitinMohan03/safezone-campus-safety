@@ -8,12 +8,17 @@ function AnimatedBlock({ children, delay = 0, className = "" }) {
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
-    const node = ref.current;
-    if (!node) return;
-    if (typeof IntersectionObserver === "undefined") {
+    const prefersReduced = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
+
+    if (prefersReduced || typeof IntersectionObserver === "undefined") {
       setVisible(true);
       return;
     }
+
+    const node = ref.current;
+    if (!node) return;
 
     const observer = new IntersectionObserver(
       (entries) => {
@@ -36,8 +41,8 @@ function AnimatedBlock({ children, delay = 0, className = "" }) {
       ref={ref}
       style={{ transitionDelay: visible ? `${delay}ms` : "0ms" }}
       className={[
-        "transform-gpu transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)]",
-        visible ? "translate-y-0 opacity-100" : "translate-y-10 opacity-0",
+        "transform-gpu transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)]",
+        visible ? "translate-y-0" : "translate-y-6",
         className,
       ]
         .filter(Boolean)
@@ -45,6 +50,21 @@ function AnimatedBlock({ children, delay = 0, className = "" }) {
     >
       {children}
     </div>
+  );
+}
+
+function StatItem({ label, value, loading }) {
+  return (
+    <li className="flex items-center gap-3">
+      {loading ? (
+        <span className="inline-block h-9 w-14 animate-pulse motion-reduce:animate-none motion-reduce:opacity-60 rounded-lg bg-primary-100" />
+      ) : (
+        <strong className="text-3xl font-bold tabular-nums text-primary-600">
+          {value}
+        </strong>
+      )}
+      <span className="text-slate-700">{label}</span>
+    </li>
   );
 }
 
@@ -72,6 +92,16 @@ function HomePage() {
     [reports]
   );
 
+  const approvedCount = useMemo(
+    () => reports.filter((r) => r.status === "approved").length,
+    [reports]
+  );
+
+  const highSeverityCount = useMemo(
+    () => reports.filter((r) => r.severity === "high").length,
+    [reports]
+  );
+
   const heroPrimaryButtonClasses =
     "inline-flex items-center justify-center rounded-full bg-gradient-to-r from-primary-500 to-sky-500 px-6 py-3 text-base font-semibold text-white shadow-lg shadow-primary-500/20 transition-transform duration-200 hover:-translate-y-0.5 hover:shadow-xl hover:shadow-primary-500/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-200 focus-visible:ring-offset-2";
   const heroSecondaryButtonClasses =
@@ -79,20 +109,16 @@ function HomePage() {
 
   return (
     <div className="flex flex-col gap-14">
+      {/* Hero */}
       <AnimatedBlock>
         <section className="grid gap-10 rounded-[24px] bg-gradient-to-br from-primary-500/10 via-sky-500/5 to-white p-8 shadow-[0_24px_48px_rgba(15,23,42,0.08)] sm:grid-cols-[minmax(0,1.1fr)_1fr] sm:p-10">
           <div className="flex max-w-xl flex-col gap-5">
-            <p className="text-sm font-semibold uppercase tracking-[0.3em] text-primary-600">
-              Community Safety Dashboard
-            </p>
-            <h1 className="text-4xl font-bold text-slate-950">
+            <h1 className="text-5xl font-bold text-slate-950 [text-wrap:balance]">
               Welcome to SafeZone
             </h1>
             <p className="text-lg text-slate-700">
-              Stay informed about emerging incidents, collaborate with your
-              neighbors, and report safety concerns in seconds. SafeZone keeps
-              every resident in the loop with real-time updates and actionable
-              insights.
+              Report safety incidents, see what&apos;s happening near campus in
+              real time, and plan safer routes across the NYU community.
             </p>
 
             <div className="flex flex-wrap gap-3">
@@ -106,38 +132,36 @@ function HomePage() {
           </div>
 
           <AnimatedBlock delay={120} className="h-full">
-            <div className="flex h-full flex-col gap-4 rounded-3xl border border-white/70 bg-white/80 p-6 shadow-xl backdrop-blur">
-              <h3 className="text-2xl font-semibold text-slate-900">
-                Today&apos;s Snapshot
+            <div className="flex h-full flex-col gap-5 rounded-3xl border border-white/70 bg-white/80 p-6 shadow-xl backdrop-blur">
+              <h3 className="text-xl font-semibold text-slate-900">
+                Live Overview
               </h3>
-              <ul className="grid gap-3 p-0 text-slate-700">
-                <li className="flex items-center gap-3">
-                  <strong className="text-3xl font-bold text-primary-600">
-                    3
-                  </strong>
-                  <span>Active incidents being monitored</span>
-                </li>
-                <li className="flex items-center gap-3">
-                  <strong className="text-3xl font-bold text-primary-600">
-                    12
-                  </strong>
-                  <span>Reports submitted this week</span>
-                </li>
-                <li className="flex items-center gap-3">
-                  <strong className="text-3xl font-bold text-primary-600">
-                    8 mins
-                  </strong>
-                  <span>Average time to acknowledge a report</span>
-                </li>
+              <ul className="grid gap-4 p-0 text-slate-700">
+                <StatItem
+                  label="approved incidents"
+                  value={approvedCount}
+                  loading={reportsLoading}
+                />
+                <StatItem
+                  label="total community reports"
+                  value={reports.length}
+                  loading={reportsLoading}
+                />
+                <StatItem
+                  label="high severity"
+                  value={highSeverityCount}
+                  loading={reportsLoading}
+                />
               </ul>
-              <p className="text-slate-600">
-                Data updates as new reports are filed.
+              <p className="text-sm text-slate-600">
+                Updates as new reports are filed.
               </p>
             </div>
           </AnimatedBlock>
         </section>
       </AnimatedBlock>
 
+      {/* High Severity Alerts */}
       {reportsLoading && (
         <AnimatedBlock>
           <section
@@ -156,7 +180,7 @@ function HomePage() {
             aria-live="polite"
           >
             <div className="grid gap-3">
-              <h2 className="text-3xl font-semibold text-slate-900">
+              <h2 className="text-3xl font-semibold text-slate-900 [text-wrap:balance]">
                 High Severity Alert
               </h2>
               <p className="text-slate-600">
@@ -181,7 +205,7 @@ function HomePage() {
                         {incident.relativeTime}
                       </span>
                     </div>
-                    <h3 className="text-xl font-semibold text-slate-900">
+                    <h3 className="text-xl font-semibold text-slate-900 [text-wrap:balance]">
                       {incident.title}
                     </h3>
                     <p className="text-slate-700">{incident.description}</p>
@@ -217,64 +241,79 @@ function HomePage() {
         </AnimatedBlock>
       )}
 
+      {/* Features */}
       <AnimatedBlock>
         <section className="space-y-8">
-          <h2 className="text-3xl font-semibold text-slate-900">
-            How SafeZone Helps Your Community
-          </h2>
-          <div className="grid gap-6 md:grid-cols-3">
-            <AnimatedBlock className="h-full" delay={0}>
-              <article className="flex h-full flex-col gap-3 rounded-2xl border border-slate-900/10 bg-white p-6 shadow-xl transition-all duration-200 hover:-translate-y-1 hover:shadow-2xl">
-                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-primary-500/20 to-sky-500/20 text-base font-bold text-primary-700">
-                  01
-                </div>
-                <h3 className="text-xl font-semibold text-slate-900">
-                  Live Safety Feed
-                </h3>
-                <p className="text-slate-700">
-                  Track nearby incidents as they unfold with automatic updates
-                  and intuitive status badges.
-                </p>
-              </article>
+          <div className="flex flex-col gap-2">
+            <h2 className="text-3xl font-semibold text-slate-900 [text-wrap:balance]">
+              How SafeZone Helps Your Community
+            </h2>
+            <p className="max-w-2xl text-slate-600">
+              From spotting an incident to coordinating a response — everything
+              you need to stay informed and act fast.
+            </p>
+          </div>
+
+          <div className="grid gap-10 md:grid-cols-3">
+            <AnimatedBlock className="flex flex-col gap-3" delay={0}>
+              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary-50 text-primary-600">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                  <circle cx="10" cy="10" r="2" fill="currentColor" />
+                  <path d="M6.343 13.657a6 6 0 0 1 0-8.485M13.657 6.343a6 6 0 0 1 0 8.485" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                  <path d="M3.515 16.485A10 10 0 0 1 3.515 3.515M16.485 3.515a10 10 0 0 1 0 13.97" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                </svg>
+              </div>
+              <h3 className="text-lg font-semibold text-slate-900">
+                Live Safety Feed
+              </h3>
+              <p className="text-slate-600">
+                Track nearby incidents as they unfold with real-time updates and
+                intuitive status indicators.
+              </p>
             </AnimatedBlock>
 
-            <AnimatedBlock className="h-full" delay={120}>
-              <article className="flex h-full flex-col gap-3 rounded-2xl border border-slate-900/10 bg-white p-6 shadow-xl transition-all duration-200 hover:-translate-y-1 hover:shadow-2xl">
-                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-primary-500/20 to-sky-500/20 text-base font-bold text-primary-700">
-                  02
-                </div>
-                <h3 className="text-xl font-semibold text-slate-900">
-                  Quick Reporting
-                </h3>
-                <p className="text-slate-700">
-                  Share what you see in just a few fields. Attach key details so
-                  responders know what to expect.
-                </p>
-              </article>
+            <AnimatedBlock className="flex flex-col gap-3" delay={100}>
+              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary-50 text-primary-600">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                  <path d="M4 4h12a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1z" stroke="currentColor" strokeWidth="1.5" />
+                  <path d="M7 8h6M7 12h4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                </svg>
+              </div>
+              <h3 className="text-lg font-semibold text-slate-900">
+                Quick Reporting
+              </h3>
+              <p className="text-slate-600">
+                Share what you see in seconds. Attach location, images, and
+                details so responders know what to expect.
+              </p>
             </AnimatedBlock>
 
-            <AnimatedBlock className="h-full" delay={240}>
-              <article className="flex h-full flex-col gap-3 rounded-2xl border border-slate-900/10 bg-white p-6 shadow-xl transition-all duration-200 hover:-translate-y-1 hover:shadow-2xl">
-                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-primary-500/20 to-sky-500/20 text-base font-bold text-primary-700">
-                  03
-                </div>
-                <h3 className="text-xl font-semibold text-slate-900">
-                  Collaborative Response
-                </h3>
-                <p className="text-slate-700">
-                  Empower neighbors and responders to communicate swiftly,
-                  reducing uncertainty when seconds matter.
-                </p>
-              </article>
+            <AnimatedBlock className="flex flex-col gap-3" delay={200}>
+              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary-50 text-primary-600">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                  <circle cx="7" cy="7" r="2.5" stroke="currentColor" strokeWidth="1.5" />
+                  <path d="M1 17c0-3.038 2.686-5.5 6-5.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                  <circle cx="14" cy="8" r="2" stroke="currentColor" strokeWidth="1.5" />
+                  <path d="M10.5 16.5c0-2.485 1.567-4.5 3.5-4.5s3.5 2.015 3.5 4.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                </svg>
+              </div>
+              <h3 className="text-lg font-semibold text-slate-900">
+                Collaborative Response
+              </h3>
+              <p className="text-slate-600">
+                Empower community members and responders to communicate swiftly,
+                reducing uncertainty when seconds matter.
+              </p>
             </AnimatedBlock>
           </div>
         </section>
       </AnimatedBlock>
 
+      {/* NYU Coverage Map */}
       <AnimatedBlock>
         <section className="flex flex-col items-center gap-7 rounded-[28px] border border-slate-900/10 bg-white p-8 text-center shadow-[0_30px_60px_rgba(15,23,42,0.12)] sm:p-10">
           <div className="grid max-w-3xl gap-4">
-            <h2 className="text-3xl font-semibold text-slate-900">
+            <h2 className="text-3xl font-semibold text-slate-900 [text-wrap:balance]">
               NYU Safety Coverage
             </h2>
             <p className="text-slate-700">
@@ -295,23 +334,6 @@ function HomePage() {
           </div>
         </section>
       </AnimatedBlock>
-
-      {/* <AnimatedBlock>
-        <section className="flex flex-wrap items-center justify-between gap-6 rounded-2xl bg-gradient-to-r from-primary-500/15 to-sky-500/10 p-8 shadow-[0_18px_40px_rgba(15,23,42,0.1)]">
-          <div className="max-w-xl space-y-3">
-            <h2 className="text-3xl font-semibold text-slate-900">
-              Ready to make your neighborhood safer?
-            </h2>
-            <p className="text-slate-700">
-              Every report—large or small—helps paint a clearer picture.
-              Let&apos;s keep each other informed and prepared.
-            </p>
-          </div>
-          <Link to="/submit-report" className={heroPrimaryButtonClasses}>
-            Share an Incident
-          </Link>
-        </section>
-      </AnimatedBlock> */}
     </div>
   );
 }

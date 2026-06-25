@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import { useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { useReports } from "../hooks/useReports";
 import Button from "../components/ui/Button";
@@ -62,9 +62,9 @@ function ReturnedReportsPage() {
   }
 
   const severityBadge = {
-    high: "bg-gradient-to-r from-rose-500 to-rose-700 text-white",
-    medium: "bg-gradient-to-r from-amber-400 to-amber-600 text-white",
-    low: "bg-gradient-to-r from-emerald-400 to-emerald-600 text-white",
+    high: "bg-rose-600 text-white",
+    medium: "bg-amber-600 text-white",
+    low: "bg-emerald-600 text-white",
   };
 
   const resolveReporterName = (report) => {
@@ -77,23 +77,20 @@ function ReturnedReportsPage() {
 
   return (
     <div className="mx-auto grid max-w-content gap-10 px-6 py-8">
-      <header className="space-y-4">
-        <p className="text-xs font-semibold uppercase tracking-[0.3em] text-primary-600">
-          Returned Reports
-        </p>
-        <h1 className="text-4xl font-bold text-slate-950">
+      <header className="flex flex-col gap-3">
+        <h1 className="text-4xl font-bold text-slate-950 [text-wrap:balance]">
           Updates requested by SafeZone admins
         </h1>
-        <p className="max-w-3xl text-slate-600">
+        <p className="max-w-2xl text-slate-600 [text-wrap:pretty]">
           These reports need more detail before they can be approved. Review the
           admin comments and resubmit when you are ready.
         </p>
       </header>
 
       {returnedReports.length === 0 ? (
-        <section className="grid gap-3 rounded-2xl border border-primary-400/30 bg-primary-500/10 p-8 text-center">
-          <h2 className="text-2xl font-semibold text-slate-900">All clear!</h2>
-          <p className="text-slate-600">
+        <section className="rounded-2xl border border-dashed border-slate-300 bg-slate-50 px-6 py-10 text-center">
+          <h2 className="text-xl font-semibold text-slate-900 [text-wrap:balance]">All clear</h2>
+          <p className="mt-2 text-sm text-slate-600">
             No reports have been returned for updates right now.
           </p>
         </section>
@@ -111,52 +108,45 @@ function ReturnedReportsPage() {
               <div className="flex flex-wrap items-center justify-between gap-3 text-sm text-slate-500">
                 <span
                   className={[
-                    "inline-flex items-center rounded-full px-3 py-1 text-xs font-bold tracking-[0.3em]",
-                    severityBadge[report.severity?.toLowerCase()] ||
-                      "bg-slate-800 text-white",
+                    "inline-flex items-center rounded-full px-3 py-0.5 text-xs font-bold",
+                    severityBadge[report.severity?.toLowerCase()] || "bg-slate-700 text-white",
                   ]
                     .filter(Boolean)
                     .join(" ")}
                 >
                   {report.severity?.toUpperCase() || "UNKNOWN"}
                 </span>
-                <time className="text-xs uppercase tracking-widest text-slate-500">
+                <time className="text-xs text-slate-500 tabular-nums">
                   {getRelativeTime(report.updatedAt || report.createdAt)}
                 </time>
               </div>
-              <h2 className="text-2xl font-semibold text-slate-900">{report.title}</h2>
+              <h2 className="text-2xl font-semibold text-slate-900 [text-wrap:balance]">{report.title}</h2>
               <p className="text-sm font-medium text-slate-600">
                 {report.isAnonymous
                   ? "Submitted anonymously"
                   : `Reported by ${resolveReporterName(report)}`}
               </p>
               <p className="text-slate-700">{report.description}</p>
-              <dl className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-                <div className="rounded-xl bg-slate-50/90 px-4 py-3">
-                  <dt className="text-[0.7rem] font-semibold uppercase tracking-[0.3em] text-slate-500">
-                    Category
-                  </dt>
-                  <dd className="mt-1 text-sm font-semibold text-slate-800">
-                    {report.category}
-                  </dd>
+              <dl className="flex flex-wrap gap-x-6 gap-y-1 text-sm">
+                <div className="flex items-center gap-1.5">
+                  <dt className="text-slate-500">Category</dt>
+                  <dd className="font-semibold text-slate-800">{report.category}</dd>
                 </div>
-                <div className="rounded-xl bg-slate-50/90 px-4 py-3">
-                  <dt className="text-[0.7rem] font-semibold uppercase tracking-[0.3em] text-slate-500">
-                    Status
-                  </dt>
-                  <dd className="mt-1 text-sm font-semibold text-slate-800">
+                <div className="flex items-center gap-1.5">
+                  <dt className="text-slate-500">Status</dt>
+                  <dd className="font-semibold text-slate-800">
                     {(report.status || "needs review")
                       .replace(/(^|\s)\S/g, (s) => s.toUpperCase())}
                   </dd>
                 </div>
               </dl>
-              <section className="grid gap-2 rounded-2xl border border-primary-400/30 bg-primary-500/10 px-4 py-3">
-                <h3 className="text-lg font-semibold text-slate-900">Admin feedback</h3>
-                <p className="text-slate-700">
+              <div className="grid gap-1.5 border-t border-slate-200 pt-4">
+                <h3 className="text-sm font-semibold text-slate-900">Admin feedback</h3>
+                <p className="text-sm text-slate-700 [text-wrap:pretty]">
                   {report.adminFeedback ||
                     "Admin feedback will appear here once provided."}
                 </p>
-              </section>
+              </div>
               <Button onClick={() => navigate(`/review-request/${report.id}`)}>
                 Review &amp; Resubmit
               </Button>

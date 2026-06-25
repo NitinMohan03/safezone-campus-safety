@@ -1,6 +1,5 @@
 // src/components/Navbar.jsx
 import { Link } from "react-router-dom";
-import React from "react";
 import useAuth from "../auth/useAuth";
 
 function Navbar() {

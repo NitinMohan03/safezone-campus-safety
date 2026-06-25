@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Button from "../components/ui/Button";
 import { useReports } from "../hooks/useReports";
 import { adminWorkflow } from "../services/adminWorkflow";
@@ -17,33 +17,6 @@ const SEVERITY_PRIORITY = {
   low: 1,
 };
 
-function useCountUp(target, { duration = 1200, decimals = 0 } = {}) {
-  const [value, setValue] = useState(0);
-
-  useEffect(() => {
-    let raf;
-    let start = 0;
-
-    const animate = (timestamp) => {
-      if (!start) start = timestamp;
-      const progress = Math.min((timestamp - start) / duration, 1);
-      const current = target * progress;
-      const rounded =
-        decimals > 0
-          ? Number(current.toFixed(decimals))
-          : Math.round(current);
-
-      setValue(progress >= 1 ? target : Math.min(target, rounded));
-
-      if (progress < 1) raf = requestAnimationFrame(animate);
-    };
-
-    raf = requestAnimationFrame(animate);
-    return () => cancelAnimationFrame(raf);
-  }, [target, duration, decimals]);
-
-  return value;
-}
 
 function AdminCenterPage() {
   const {
@@ -126,10 +99,6 @@ function AdminCenterPage() {
     [enrichedReports]
   );
 
-  const pendingCount = useCountUp(stats.pending);
-  const needsReviewCount = useCountUp(stats.needsReview);
-  const approvedCount = useCountUp(stats.approved);
-
   const updateQueueEntry = (id, updater) => {
     setQueue((prev) =>
       prev.map((item) =>
@@ -187,16 +156,16 @@ function AdminCenterPage() {
 
   const severityDecorators = {
     high: {
-      card: "border-rose-600/40 shadow-[0_22px_48px_rgba(185,28,28,0.18)]",
-      badge: "bg-gradient-to-r from-rose-500 to-rose-700 text-white",
+      card: "border-rose-300/60 shadow-[0_18px_40px_rgba(185,28,28,0.12)]",
+      badge: "bg-rose-600 text-white",
     },
     medium: {
-      card: "border-amber-500/40 shadow-[0_20px_44px_rgba(217,119,6,0.18)]",
-      badge: "bg-gradient-to-r from-amber-400 to-amber-600 text-white",
+      card: "border-amber-300/60 shadow-[0_18px_40px_rgba(217,119,6,0.10)]",
+      badge: "bg-amber-600 text-white",
     },
     low: {
-      card: "border-emerald-500/40 shadow-[0_18px_38px_rgba(22,163,74,0.18)]",
-      badge: "bg-gradient-to-r from-emerald-400 to-emerald-600 text-white",
+      card: "border-emerald-300/60 shadow-[0_18px_40px_rgba(22,163,74,0.10)]",
+      badge: "bg-emerald-600 text-white",
     },
   };
 
@@ -276,51 +245,59 @@ function AdminCenterPage() {
 
   return (
     <div className="flex flex-col gap-12">
-      <header className="flex flex-wrap justify-between gap-8 rounded-[24px] border border-slate-900/10 bg-white p-8 shadow-[0_22px_46px_rgba(15,23,42,0.1)]">
-        <div className="space-y-4">
-          <p className="inline-flex items-center rounded-full bg-primary-100 px-3 py-1 text-xs font-semibold uppercase tracking-[0.3em] text-primary-700">
-            Admin Review Portal
-          </p>
-          <h1 className="text-4xl font-bold text-slate-950">
+      <header className="flex flex-wrap items-start justify-between gap-6 rounded-[24px] border border-slate-900/10 bg-white p-8 shadow-[0_22px_46px_rgba(15,23,42,0.1)]">
+        <div className="flex flex-col gap-3">
+          <h1 className="text-4xl font-bold text-slate-950 [text-wrap:balance]">
             Validate community reports
           </h1>
-          <p className="text-slate-600">
+          <p className="max-w-xl text-slate-600 [text-wrap:pretty]">
             Review incoming incidents, verify evidence, and trigger alert
-            dispatch — mirroring the Admin Review flow from Sprint 3 diagrams.
+            dispatch.
           </p>
+          {reportsLoading ? (
+            <div className="flex gap-5 pt-1">
+              {[0, 1, 2].map((i) => (
+                <span
+                  key={i}
+                  className="h-4 w-20 animate-pulse motion-reduce:animate-none motion-reduce:opacity-60 rounded-full bg-slate-100"
+                />
+              ))}
+            </div>
+          ) : (
+            <div className="flex flex-wrap gap-x-5 gap-y-1 pt-1 text-sm">
+              <div className="flex items-center gap-1.5">
+                <span className="text-slate-500">Pending</span>
+                <span className="font-semibold tabular-nums text-slate-900">
+                  {stats.pending}
+                </span>
+              </div>
+              <div className="flex items-center gap-1.5">
+                <span className="text-slate-500">Needs review</span>
+                <span className="font-semibold tabular-nums text-amber-700">
+                  {stats.needsReview}
+                </span>
+              </div>
+              <div className="flex items-center gap-1.5">
+                <span className="text-slate-500">Approved</span>
+                <span className="font-semibold tabular-nums text-emerald-700">
+                  {stats.approved}
+                </span>
+              </div>
+            </div>
+          )}
         </div>
 
-        <dl className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-3">
-          <div className="rounded-2xl bg-primary-500/10 px-4 py-5 text-center">
-            <dt className="text-sm font-medium text-slate-600">Pending</dt>
-            <dd className="mt-2 text-2xl font-bold text-primary-700">
-              {Math.round(pendingCount)}
-            </dd>
-          </div>
-          <div className="rounded-2xl bg-amber-500/10 px-4 py-5 text-center">
-            <dt className="text-sm font-medium text-slate-600">Needs review</dt>
-            <dd className="mt-2 text-2xl font-bold text-amber-600">
-              {Math.round(needsReviewCount)}
-            </dd>
-          </div>
-          <div className="rounded-2xl bg-emerald-500/10 px-4 py-5 text-center">
-            <dt className="text-sm font-medium text-slate-600">Approved</dt>
-            <dd className="mt-2 text-2xl font-bold text-emerald-600">
-              {Math.round(approvedCount)}
-            </dd>
-          </div>
-        </dl>
-        <div className="flex flex-col items-end gap-3">
+        <div className="flex flex-col items-end gap-2">
           <Button
             type="button"
             onClick={handleExportRecentReports}
             disabled={isExporting || reportsLoading}
             className="w-full sm:w-auto"
           >
-            {isExporting ? "Preparing CSV…" : "Export Recent Reports (CSV)"}
+            {isExporting ? "Preparing CSV…" : "Export Reports (CSV)"}
           </Button>
           <p className="text-xs text-slate-500">
-            Includes all reports filed within the last 7 days.
+            Includes all reports from the last 30 days.
           </p>
         </div>
       </header>
@@ -330,7 +307,7 @@ function AdminCenterPage() {
           <p className="text-slate-600">Loading reports awaiting review…</p>
         )}
         {reportsError && (
-          <p className="rounded-2xl border border-rose-300/60 bg-rose-200/30 px-4 py-3 text-sm font-medium text-rose-700">
+          <p className="rounded-2xl border border-rose-300/60 bg-rose-50 px-4 py-3 text-sm font-medium text-rose-700" role="alert">
             We couldn&apos;t load the review queue. Please retry shortly.
           </p>
         )}
@@ -354,7 +331,7 @@ function AdminCenterPage() {
               >
                 <header className="flex flex-wrap items-center justify-between gap-4">
                   <div className="flex flex-wrap items-center gap-3">
-                    <span className="inline-flex items-center rounded-full bg-primary-100 px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-primary-700">
+                    <span className="inline-flex items-center rounded-full bg-primary-100 px-3 py-1 text-xs font-semibold text-primary-700">
                       {statusLabel}
                     </span>
                     <time className="text-sm text-slate-500">
@@ -363,9 +340,8 @@ function AdminCenterPage() {
                   </div>
                   <span
                     className={[
-                      "rounded-full px-3 py-1 text-xs font-bold tracking-[0.3em] text-white",
-                      severityDecorators[severityKey]?.badge ||
-                        "bg-slate-800 text-white",
+                      "rounded-full px-3 py-0.5 text-xs font-bold text-white",
+                      severityDecorators[severityKey]?.badge || "bg-slate-700",
                     ]
                       .filter(Boolean)
                       .join(" ")}
@@ -374,7 +350,7 @@ function AdminCenterPage() {
                   </span>
                 </header>
 
-                <h2 className="text-2xl font-semibold text-slate-900">
+                <h2 className="text-2xl font-semibold text-slate-900 [text-wrap:balance]">
                   {incident.title}
                 </h2>
                 <p className="text-slate-700">{incident.description}</p>
@@ -435,12 +411,12 @@ function AdminCenterPage() {
             );
           })}
         {!reportsLoading && queue.length === 0 && !reportsError && (
-          <p className="text-slate-600">
+          <p className="rounded-2xl border border-dashed border-slate-300 bg-slate-50 px-6 py-10 text-center text-sm text-slate-600">
             All caught up — no pending incidents require review.
           </p>
         )}
         {actionError && (
-          <p className="rounded-2xl border border-rose-300/60 bg-rose-200/30 px-4 py-3 text-sm font-medium text-rose-700">
+          <p className="rounded-2xl border border-rose-300/60 bg-rose-50 px-4 py-3 text-sm font-medium text-rose-700" role="alert">
             {actionError}
           </p>
         )}

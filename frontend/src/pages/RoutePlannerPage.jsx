@@ -102,9 +102,9 @@ function RoutePlannerPage() {
   // Error state
   if (error) {
     return (
-      <div className="flex min-h-[60vh] flex-col items-center justify-center gap-4 rounded-2xl border border-rose-300/60 bg-white/80 p-10 text-center shadow-xl">
-        <h2 className="text-2xl font-semibold text-rose-700">
-          ⚠️ Unable to load route data
+      <div className="flex min-h-[60vh] flex-col items-center justify-center gap-4 rounded-2xl border border-rose-300/60 bg-white p-10 text-center shadow-xl" role="alert">
+        <h2 className="text-2xl font-semibold text-rose-700 [text-wrap:balance]">
+          Unable to load route data
         </h2>
         <p className="text-slate-600">
           {error.message ||
@@ -117,7 +117,7 @@ function RoutePlannerPage() {
   // Loading state
   if (isLoading) {
     return (
-      <div className="flex min-h-[40vh] items-center justify-center rounded-2xl border border-slate-200 bg-white/80 p-10 text-slate-600 shadow-lg">
+      <div className="flex min-h-[40vh] items-center justify-center rounded-2xl border border-slate-200 bg-white p-10 text-slate-600 shadow-lg">
         Loading route planner data…
       </div>
     );
@@ -131,13 +131,13 @@ function RoutePlannerPage() {
       <div className="flex flex-col gap-4">
         <IncidentTicker incidents={route.incidents || []} />
         {error && (
-          <p className="rounded-2xl border border-rose-300/60 bg-rose-200/40 px-4 py-3 text-sm font-medium text-rose-700 shadow-lg shadow-rose-500/20">
+          <p className="rounded-2xl border border-rose-300/60 bg-rose-50 px-4 py-3 text-sm font-medium text-rose-700" role="alert">
             Unable to load live incident data. Showing last known details.
           </p>
         )}
       </div>
 
-      <div className="relative h-[720px] overflow-hidden rounded-[32px] border border-white/60 bg-gradient-to-br from-slate-100 via-white to-slate-200/60 shadow-[0_30px_70px_rgba(15,23,42,0.18)] md:h-[760px]">
+      <div className="relative h-[720px] overflow-hidden rounded-[32px] border border-slate-200 bg-slate-100 shadow-[0_30px_70px_rgba(15,23,42,0.18)] md:h-[760px]">
         <RouteMap
           mapRef={route.mapRef}
           onMove={handleMapMove}
@@ -153,7 +153,7 @@ function RoutePlannerPage() {
         />
 
         <div className="pointer-events-none absolute right-4 top-4 z-50 sm:right-6 sm:top-6">
-          <div className="pointer-events-auto flex gap-2 rounded-2xl border border-white/60 bg-white/90 p-2 shadow-[0_12px_30px_rgba(15,23,42,0.12)] backdrop-blur-lg">
+          <div className="pointer-events-auto flex gap-2 rounded-2xl border border-slate-200 bg-white p-2 shadow-[0_12px_30px_rgba(15,23,42,0.12)]">
             <button
               type="button"
               className={[

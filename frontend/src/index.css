@@ -29,7 +29,7 @@
   }
 
   .app-container main {
-    @apply flex-1 w-full max-w-content mx-auto px-4 sm:px-6 py-12 pb-16;
+    @apply flex-1 w-full max-w-content mx-auto px-4 sm:px-6 py-8 pb-12;
   }
 
   .app-container footer {
@@ -44,11 +44,7 @@
     @apply mb-4;
   }
 
-  section {
-    @apply mb-12;
-  }
-
-  .muted-text {
+.muted-text {
     @apply text-slate-600;
   }
 }

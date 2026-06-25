@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import Button from "../components/ui/Button";
 import useAuth from "../auth/useAuth";
@@ -40,10 +40,10 @@ function LoginPage() {
     "w-full rounded-xl border border-slate-200 px-4 py-3 text-base transition focus:border-primary-400 focus:outline-none focus:ring-4 focus:ring-primary-200 disabled:cursor-not-allowed disabled:opacity-60";
 
   return (
-    <div className="flex min-h-[calc(100vh-120px)] items-center justify-center bg-gradient-to-br from-primary-50 to-slate-50 px-6 py-10">
+    <div className="flex min-h-[calc(100vh-120px)] items-center justify-center px-6 py-10">
       <div className="w-full max-w-md rounded-[20px] border border-slate-200 bg-white p-8 shadow-[0_30px_60px_rgba(15,23,42,0.1)]">
-        <h1 className="text-3xl font-bold text-slate-950">Welcome back</h1>
-        <p className="mt-2 text-slate-600">
+        <h1 className="text-3xl font-bold text-slate-950 [text-wrap:balance]">Welcome back</h1>
+        <p className="mt-2 text-slate-600 [text-wrap:pretty]">
           Sign in with your SafeZone credentials to continue.
         </p>
 
@@ -77,7 +77,7 @@ function LoginPage() {
           </label>
 
           {(formError || error) && (
-            <div className="rounded-xl border border-rose-300/60 bg-rose-200/30 px-3 py-2 text-sm font-semibold text-rose-700">
+            <div className="rounded-xl border border-rose-300/60 bg-rose-50 px-3 py-2 text-sm font-semibold text-rose-700" role="alert">
               {formError || error}
             </div>
           )}

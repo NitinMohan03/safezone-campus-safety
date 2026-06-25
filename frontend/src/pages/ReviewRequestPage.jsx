@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { api } from "../services/api";
 import { adminWorkflow } from "../services/adminWorkflow";
@@ -160,26 +160,21 @@ function ReviewRequestPage() {
         className="grid gap-6 rounded-2xl border border-slate-200 bg-white p-6 shadow-[0_20px_60px_rgba(15,23,42,0.08)] sm:p-8"
         onSubmit={handleSubmit}
       >
-        <div className="space-y-4">
-          <p className="text-xs font-semibold uppercase tracking-[0.3em] text-primary-600">
-            Review Request
-          </p>
-          <div className="space-y-2">
-            <h1 className="text-3xl font-bold text-slate-950">
+        <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-2">
+            <h1 className="text-3xl font-bold text-slate-950 [text-wrap:balance]">
               Update your report
             </h1>
-            <p className="text-slate-600">
+            <p className="max-w-xl text-slate-600 [text-wrap:pretty]">
               The SafeZone admin team asked for a few tweaks before the report
               can go live.
             </p>
           </div>
-          <div className="rounded-2xl border border-primary-200/60 bg-primary-500/5 p-4">
-            <div className="space-y-2">
-              <h2 className="text-xl font-semibold text-slate-900">
-                Admin Feedback
-              </h2>
-              <p className="text-slate-700">{feedback}</p>
-            </div>
+          <div className="flex flex-col gap-1.5 border-t border-slate-200 pt-4">
+            <h2 className="text-sm font-semibold text-slate-900">
+              Admin feedback
+            </h2>
+            <p className="text-sm text-slate-700 [text-wrap:pretty]">{feedback}</p>
           </div>
         </div>
 
@@ -213,11 +208,15 @@ function ReviewRequestPage() {
         />
 
         {deleteError && (
-          <p className="text-sm font-semibold text-rose-600">{deleteError}</p>
+          <p className="rounded-xl border border-rose-300/60 bg-rose-50 px-4 py-3 text-sm font-semibold text-rose-700" role="alert">
+            {deleteError}
+          </p>
         )}
 
         {saveError && (
-          <p className="text-sm font-semibold text-rose-600">{saveError}</p>
+          <p className="rounded-xl border border-rose-300/60 bg-rose-50 px-4 py-3 text-sm font-semibold text-rose-700" role="alert">
+            {saveError}
+          </p>
         )}
 
         <div className="flex flex-wrap justify-end gap-3">

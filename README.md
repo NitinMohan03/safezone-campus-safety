@@ -4,7 +4,8 @@
 
 SafeZone is a full-featured React application that empowers campus communities to report safety incidents, view live incident feeds, plan safer routes, and stay informed about their environment. Built with modern web technologies and designed for both demo and production use.
 
-[![Deploy to AWS Amplify](https://img.shields.io/badge/Deploy-AWS%20Amplify-orange?logo=amazonaws)](./frontend/DEPLOYMENT.md)
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-Vercel-black?logo=vercel)](https://safezone-campus-safety.vercel.app)
+[![Mock API](https://img.shields.io/badge/Mock%20API-Render-46E3B7?logo=render)](https://safezone-campus-safety.onrender.com)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
 ---
@@ -64,10 +65,14 @@ SafeZone/
 │   │   ├── routes/       # Protected/Admin route guards
 │   │   ├── services/     # API services and integrations
 │   │   └── utils/        # Utility functions
-│   ├── db.json           # Mock database for JSON mode
-│   ├── amplify.yml       # AWS Amplify build config
-│   └── DEPLOYMENT.md     # Deployment guide
-└── .env                  # Environment configuration
+│   ├── db.json           # Mock database for local development
+│   └── vercel.json       # Vercel SPA routing config
+├── mock-api/              # json-server for portfolio demo API
+│   ├── db.json           # Full mock dataset (reports, users, zones)
+│   └── package.json      # json-server setup for Render
+└── backend/               # Django REST Framework (production backend)
+    ├── api/              # API endpoints
+    └── backend/          # Django settings
 ```
 
 ---
@@ -85,8 +90,8 @@ SafeZone/
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/YOUR_USERNAME/safezone-frontend.git
-   cd safezone-frontend
+   git clone https://github.com/NitinMohan03/safezone-campus-safety.git
+   cd safezone-campus-safety
    ```
 
 2. **Install dependencies**
@@ -96,32 +101,29 @@ SafeZone/
    ```
 
 3. **Configure environment variables**
-   
-   Copy the example environment file:
-   ```bash
-   # From the root directory
-   cp .env.example .env
-   ```
-   
-   Edit `.env` and add your configuration:
+
+   Create a `.env` file in the `frontend/` directory:
    ```bash
    # API Mode (json for mock, django for real backend)
    VITE_API_MODE=json
    VITE_USE_MOCK_AUTH=true
-   
+
+   # Mock API (points to Render json-server or localhost)
+   VITE_API_BASE_URL=https://safezone-campus-safety.onrender.com
+
    # Mapbox (REQUIRED for maps)
    VITE_MAPBOX_TOKEN=your_mapbox_token_here
-   
+
    # AWS Cognito (for real authentication)
    VITE_AWS_REGION=us-east-1
    VITE_COGNITO_USER_POOL_ID=your_pool_id
    VITE_COGNITO_WEB_CLIENT_ID=your_client_id
    VITE_COGNITO_ADMIN_GROUP=admin-group
-   
+
    # Cloudinary (for image uploads)
    VITE_CLOUDINARY_CLOUD_NAME=your_cloud_name
    VITE_CLOUDINARY_UPLOAD_PRESET=your_preset
-   
+
    # Make.com Webhooks (optional)
    VITE_MAKE_WEBHOOK_URL=your_webhook_url
    VITE_ALERT_WEBHOOK_URL=your_alert_webhook_url
@@ -132,7 +134,7 @@ SafeZone/
    cd frontend
    npm run dev
    ```
-   
+
    Open [http://localhost:5173](http://localhost:5173) in your browser! 🎉
 
 ---
@@ -144,15 +146,15 @@ SafeZone/
 Perfect for testing, demos, and development without backend setup:
 
 ```bash
-# In .env
 VITE_API_MODE=json
 VITE_USE_MOCK_AUTH=true
+VITE_API_BASE_URL=https://safezone-campus-safety.onrender.com
 ```
 
 **Features:**
 - ✅ All UI features work
 - ✅ Mock authentication (no signup needed)
-- ✅ Data stored in `db.json`
+- ✅ Data served from Render json-server
 - ✅ Perfect for demos and testing
 - ✅ Zero backend dependencies
 
@@ -165,8 +167,7 @@ VITE_USE_MOCK_AUTH=true
 Connect to real AWS Cognito and backend:
 
 ```bash
-# In .env
-VITE_API_MODE=django  # or your backend mode
+VITE_API_MODE=django
 VITE_USE_MOCK_AUTH=false
 # ... add real Cognito credentials
 ```
@@ -187,32 +188,32 @@ VITE_USE_MOCK_AUTH=false
 
 ## 🌐 Deployment
 
-### AWS Amplify (Recommended)
+The live portfolio demo uses a zero-cost stack:
 
-Deploy with zero backend maintenance and free hosting:
+| Service | Platform | URL |
+|---------|----------|-----|
+| Frontend | Vercel | https://safezone-campus-safety.vercel.app |
+| Mock API | Render | https://safezone-campus-safety.onrender.com |
 
-1. **Push to GitHub**
-   ```bash
-   git add .
-   git commit -m "Initial commit"
-   git push origin main
-   ```
+### Frontend — Vercel
 
-2. **Follow the deployment guide**
-   
-   See detailed instructions in [DEPLOYMENT.md](./frontend/DEPLOYMENT.md)
-
-3. **Set environment variables in Amplify Console**
+1. Import repo on [vercel.com](https://vercel.com)
+2. Set **Root Directory** to `frontend`
+3. Build command: `npm run build` / Output: `dist`
+4. Add environment variables:
    - `VITE_API_MODE=json`
-   - `VITE_MAPBOX_TOKEN=your_token`
    - `VITE_USE_MOCK_AUTH=true`
+   - `VITE_API_BASE_URL=https://safezone-campus-safety.onrender.com`
+   - `VITE_MAPBOX_TOKEN=your_token`
 
-**Cost:** $0 on AWS free tier! 🎉
+### Mock API — Render
 
-### Other Platforms
+1. New **Web Service** on [render.com](https://render.com) → connect repo
+2. Set **Root Directory** to `mock-api`
+3. Runtime: Node, Build: `npm install`, Start: `npm start`
+4. Free tier — spins down after 15 min idle (first request after idle takes ~30s)
 
-- **Netlify/Vercel**: Drag `dist/` folder or connect GitHub
-- **Custom Server**: Serve `dist/` as static files with your web server
+**Cost:** $0 🎉
 
 ---
 
@@ -263,6 +264,7 @@ npm run test
 | Variable | Required | Description |
 |----------|----------|-------------|
 | `VITE_API_MODE` | Yes | API mode: `json` or `django` |
+| `VITE_API_BASE_URL` | Yes | Base URL for the API server |
 | `VITE_MAPBOX_TOKEN` | Yes | Mapbox access token |
 | `VITE_USE_MOCK_AUTH` | No | Enable mock authentication |
 | `VITE_AWS_REGION` | For Cognito | AWS region for Cognito |
@@ -273,8 +275,6 @@ npm run test
 | `VITE_CLOUDINARY_UPLOAD_PRESET` | For uploads | Upload preset name |
 | `VITE_MAKE_WEBHOOK_URL` | For webhooks | Make.com webhook URL |
 | `VITE_ALERT_WEBHOOK_URL` | For alerts | Alert webhook URL |
-
-See [`.env.example`](.env.example) for a complete template.
 
 ---
 
@@ -350,18 +350,17 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - Check preset allows unsigned uploads
 - Ensure file size is within limits
 
-### Build fails in Amplify?
-- Verify `amplify.yml` is in the repository
-- Check Node.js version (18+ required)
-- Review build logs in Amplify Console
+### API slow on first load?
+- Render free tier spins down after 15 min idle
+- First request after idle takes ~30s to wake up
+- Subsequent requests are fast
 
 ---
 
 ## 📞 Support
 
-- **Documentation**: See [DEPLOYMENT.md](./frontend/DEPLOYMENT.md)
-- **Issues**: [GitHub Issues](https://github.com/YOUR_USERNAME/safezone-frontend/issues)
-- **Email**: your-email@example.com
+- **Issues**: [GitHub Issues](https://github.com/NitinMohan03/safezone-campus-safety/issues)
+- **Email**: nitinmohanofficial@gmail.com
 
 ---
 
@@ -370,7 +369,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - Built for NYU Tandon School of Engineering
 - Maps powered by [Mapbox](https://www.mapbox.com/)
 - Icons from [Heroicons](https://heroicons.com/)
-- Hosting by [AWS Amplify](https://aws.amazon.com/amplify/)
+- Hosted on [Vercel](https://vercel.com) + [Render](https://render.com)
 
 ---
 

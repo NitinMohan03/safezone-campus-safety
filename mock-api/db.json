@@ -1,0 +1,1230 @@
+{
+  "users": [
+    {
+      "id": "347874f8-c051-70af-a1e3-187b306bf348",
+      "role": "user",
+      "name": {
+        "given": "Lena",
+        "family": "Alvarez"
+      }
+    },
+    {
+      "id": "6498e438-50f1-7085-8062-7c91d4fd0bb1",
+      "role": "user",
+      "name": {
+        "given": "Marcus",
+        "family": "Hale"
+      }
+    },
+    {
+      "id": "8498c498-e041-7040-d2ed-0fc5d5e2a0f8",
+      "role": "user",
+      "name": {
+        "given": "Priya",
+        "family": "Desai"
+      }
+    },
+    {
+      "id": "a4b88488-c021-70b9-25db-d750bad79ab9",
+      "role": "user",
+      "name": {
+        "given": "Noah",
+        "family": "Bennett"
+      }
+    }
+  ],
+  "zones": [
+    {
+      "id": "z1",
+      "name": "Brooklyn Downtown",
+      "polygonGeoJSON": "{\"type\":\"Polygon\",\"coordinates\":[[[-73.995,40.696],[-73.990,40.696],[-73.990,40.700],[-73.995,40.700],[-73.995,40.696]]]}",
+      "version": 1,
+      "publishedAt": "2025-11-12T10:00:00Z"
+    },
+    {
+      "id": "z2",
+      "name": "Midtown Manhattan",
+      "polygonGeoJSON": "{\"type\":\"Polygon\",\"coordinates\":[[[-73.986,40.754],[-73.982,40.754],[-73.982,40.758],[-73.986,40.758],[-73.986,40.754]]]}",
+      "version": 1,
+      "publishedAt": "2025-11-13T10:00:00Z"
+    }
+  ],
+  "reports": [
+    {
+      "id": "r1",
+      "title": "Fallen Tree Blocking Sidewalk",
+      "category": "Environmental Hazard",
+      "description": "A large tree has fallen and is blocking the sidewalk.",
+      "severity": "high",
+      "status": "approved",
+      "tags": [
+        "Hazard",
+        "Emergency services"
+      ],
+      "location": {
+        "lat": 40.6955,
+        "lng": -73.985
+      },
+      "reporter": "Lena Alvarez",
+      "attachments": [
+        "photo.jpg"
+      ],
+      "createdAt": "2025-11-12T18:02:00Z",
+      "zoneId": "z1",
+      "userId": "347874f8-c051-70af-a1e3-187b306bf348",
+      "upvotes": 3,
+      "updatedAt": "2025-11-12T19:55:08.695Z",
+      "publishedAt": "2025-11-12T19:55:08.695Z",
+      "reporter_email": "nb4048@nyu.edu"
+    },
+    {
+      "id": "r2",
+      "title": "Construction Zone",
+      "category": "Public Works",
+      "description": "Road construction causing narrow lanes and delays.helli",
+      "severity": "low",
+      "status": "pending",
+      "tags": [
+        "Traffic",
+        "Public works"
+      ],
+      "location": {
+        "lat": 40.691,
+        "lng": -73.988
+      },
+      "reporter": "Marcus Hale",
+      "attachments": [],
+      "createdAt": "2025-11-12T17:52:00Z",
+      "zoneId": "z1",
+      "userId": "6498e438-50f1-7085-8062-7c91d4fd0bb1",
+      "upvotes": 0,
+      "updatedAt": "2025-11-13T03:12:47.412Z",
+      "adminFeedback": "today is very cold",
+      "reporter_email": "nitinmohan310@gmail.com"
+    },
+    {
+      "id": "r3",
+      "title": "Slippery Road",
+      "category": "Weather Impact",
+      "description": "Road is slippery due to recent rain, caution advised.",
+      "severity": "low",
+      "status": "needs review",
+      "tags": [
+        "Road",
+        "Weather"
+      ],
+      "location": {
+        "lat": 40.6925,
+        "lng": -73.993
+      },
+      "reporter": "Priya Desai",
+      "attachments": [],
+      "createdAt": "2025-11-12T17:29:00Z",
+      "zoneId": "z1",
+      "userId": "8498c498-e041-7040-d2ed-0fc5d5e2a0f8",
+      "upvotes": 5,
+      "adminFeedback": "Please add approximate road segment or cross streets so crews can locate the hazard.",
+      "reporter_email": "maxtai.tw@gmail.com"
+    },
+    {
+      "id": "r4",
+      "title": "Suspicious activity near Elm Street",
+      "category": "Suspicious Activity",
+      "description": "Neighbor reported an unfamiliar vehicle parked with engine running for an extended period.",
+      "severity": "medium",
+      "status": "pending",
+      "tags": [
+        "Community tip",
+        "North district"
+      ],
+      "location": {
+        "lat": 40.6978,
+        "lng": -73.9912
+      },
+      "reporter": "Noah Bennett",
+      "attachments": [],
+      "createdAt": "2025-11-12T17:19:00Z",
+      "zoneId": "z2",
+      "userId": "a4b88488-c021-70b9-25db-d750bad79ab9",
+      "upvotes": 0,
+      "reporter_email": "bill255203@gmail.com"
+    },
+    {
+      "id": "r5",
+      "title": "Elevator outage at MetroTech dorms",
+      "category": "Facilities",
+      "description": "Facilities team on-site after residents reported elevator doors not closing properly in the east tower.",
+      "severity": "medium",
+      "status": "approved",
+      "tags": [
+        "Facilities",
+        "East dorm"
+      ],
+      "location": {
+        "lat": 40.6945,
+        "lng": -73.9867
+      },
+      "reporter": "Lena Alvarez",
+      "attachments": [
+        "maintenance-ticket.pdf"
+      ],
+      "createdAt": "2025-11-12T17:04:00Z",
+      "zoneId": "z1",
+      "userId": "347874f8-c051-70af-a1e3-187b306bf348",
+      "upvotes": 0,
+      "reporter_email": "nb4048@nyu.edu"
+    },
+    {
+      "id": "r6",
+      "title": "Gas smell reported near Jay Street entrance",
+      "category": "Infrastructure",
+      "description": "Pedestrians reported a strong natural gas odor near the Jay St subway entrance. Cones placed while FDNY investigates.",
+      "severity": "high",
+      "status": "approved",
+      "tags": [
+        "Gas leak",
+        "Emergency services"
+      ],
+      "location": {
+        "lat": 40.6959,
+        "lng": -73.9875
+      },
+      "reporter": "Marcus Hale",
+      "attachments": [],
+      "createdAt": "2025-11-13T12:10:00Z",
+      "updatedAt": "2025-11-13T12:10:00Z",
+      "zoneId": "z1",
+      "userId": "6498e438-50f1-7085-8062-7c91d4fd0bb1",
+      "upvotes": 7,
+      "reporter_email": "nitinmohan310@gmail.com"
+    },
+    {
+      "id": "r7",
+      "title": "Crowded platform after stalled Manhattan-bound train",
+      "category": "Transit Delay",
+      "description": "Service paused for 15 minutes leading to platform overcrowding at the Borough Hall station mezzanine.",
+      "severity": "medium",
+      "status": "pending",
+      "tags": [
+        "Transit",
+        "Crowding"
+      ],
+      "location": {
+        "lat": 40.6921,
+        "lng": -73.9858
+      },
+      "reporter": "Priya Desai",
+      "attachments": [
+        "https://res.cloudinary.com/demo/image/upload/v1690981230/crowded-platform.jpg"
+      ],
+      "createdAt": "2025-11-13T12:35:00Z",
+      "updatedAt": "2025-11-13T12:45:00Z",
+      "zoneId": "z1",
+      "userId": "8498c498-e041-7040-d2ed-0fc5d5e2a0f8",
+      "upvotes": 2,
+      "reporter_email": "maxtai.tw@gmail.com"
+    },
+    {
+      "id": "r8",
+      "title": "Large pothole forming on Flatbush Ave",
+      "category": "Road Hazard",
+      "description": "Drivers swerving to avoid a widening pothole near Flatbush Ave and Willoughby St intersection.",
+      "severity": "low",
+      "status": "needs review",
+      "tags": [
+        "Road",
+        "Maintenance"
+      ],
+      "location": {
+        "lat": 40.6929,
+        "lng": -73.9817
+      },
+      "reporter": "Noah Bennett",
+      "attachments": [],
+      "createdAt": "2025-11-13T13:05:00Z",
+      "zoneId": "z1",
+      "userId": "a4b88488-c021-70b9-25db-d750bad79ab9",
+      "upvotes": 1,
+      "reporter_email": "bill255203@gmail.com"
+    },
+    {
+      "id": "r9",
+      "title": "Assault reported near MetroTech Commons",
+      "category": "Personal Safety",
+      "description": "NYPD responding to a reported assault near the center lawn. Area temporarily cordoned off.",
+      "severity": "high",
+      "status": "approved",
+      "tags": [
+        "Police activity",
+        "Personal safety"
+      ],
+      "location": {
+        "lat": 40.6937,
+        "lng": -73.9864
+      },
+      "reporter": "Lena Alvarez",
+      "attachments": [],
+      "createdAt": "2025-11-13T13:17:00Z",
+      "updatedAt": "2025-11-13T13:20:00Z",
+      "zoneId": "z1",
+      "userId": "347874f8-c051-70af-a1e3-187b306bf348",
+      "upvotes": 4,
+      "reporter_email": "nb4048@nyu.edu"
+    },
+    {
+      "id": "r10",
+      "title": "Bike theft cluster near Navy Street racks",
+      "category": "Property Crime",
+      "description": "Three cyclists reported missing bikes within an hour; security footage requested.",
+      "severity": "medium",
+      "status": "pending",
+      "tags": [
+        "Bike",
+        "Theft"
+      ],
+      "location": {
+        "lat": 40.6973,
+        "lng": -73.9806
+      },
+      "reporter": "Marcus Hale",
+      "attachments": [],
+      "createdAt": "2025-11-13T13:32:00Z",
+      "zoneId": "z2",
+      "userId": "6498e438-50f1-7085-8062-7c91d4fd0bb1",
+      "upvotes": 0,
+      "reporter_email": "nitinmohan310@gmail.com"
+    },
+    {
+      "id": "r11",
+      "title": "Water main break near York Street",
+      "category": "Infrastructure",
+      "description": "NYC DEP crews responding to a water main break causing minor flooding in the curb lane.",
+      "severity": "medium",
+      "status": "approved",
+      "tags": [
+        "Infrastructure",
+        "Flooding"
+      ],
+      "location": {
+        "lat": 40.7002,
+        "lng": -73.9861
+      },
+      "reporter": "Priya Desai",
+      "attachments": [],
+      "createdAt": "2025-11-13T14:05:00Z",
+      "updatedAt": "2025-11-13T14:20:00Z",
+      "zoneId": "z2",
+      "userId": "8498c498-e041-7040-d2ed-0fc5d5e2a0f8",
+      "upvotes": 3,
+      "reporter_email": "maxtai.tw@gmail.com"
+    },
+    {
+      "id": "r12",
+      "title": "Smoke spotted on Adams Street rooftop",
+      "category": "Fire",
+      "description": "Light smoke coming from a rooftop HVAC unit; FDNY notified and en route.",
+      "severity": "high",
+      "status": "pending",
+      "tags": [
+        "Fire",
+        "Emergency services"
+      ],
+      "location": {
+        "lat": 40.6971,
+        "lng": -73.9879
+      },
+      "reporter": "Noah Bennett",
+      "attachments": [],
+      "createdAt": "2025-11-13T14:12:00Z",
+      "zoneId": "z1",
+      "userId": "a4b88488-c021-70b9-25db-d750bad79ab9",
+      "upvotes": 6,
+      "reporter_email": "bill255203@gmail.com"
+    },
+    {
+      "id": "r13",
+      "title": "Broken streetlight at Myrtle Ave & Duffield",
+      "category": "Public Works",
+      "description": "Streetlight cycling on and off creating dark crossing conditions.",
+      "severity": "low",
+      "status": "needs review",
+      "tags": [
+        "Lighting",
+        "Maintenance"
+      ],
+      "location": {
+        "lat": 40.6949,
+        "lng": -73.9833
+      },
+      "reporter": "Lena Alvarez",
+      "attachments": [],
+      "createdAt": "2025-11-13T14:18:00Z",
+      "zoneId": "z1",
+      "userId": "347874f8-c051-70af-a1e3-187b306bf348",
+      "upvotes": 1,
+      "reporter_email": "nb4048@nyu.edu"
+    },
+    {
+      "id": "r14",
+      "title": "Debris from scaffolding near Willoughby Street",
+      "category": "Construction",
+      "description": "Loose plastic sheeting falling from scaffolding onto sidewalk.",
+      "severity": "medium",
+      "status": "pending",
+      "tags": [
+        "Construction",
+        "Hazard"
+      ],
+      "location": {
+        "lat": 40.6928,
+        "lng": -73.9812
+      },
+      "reporter": "Marcus Hale",
+      "attachments": [],
+      "createdAt": "2025-11-13T14:24:00Z",
+      "zoneId": "z1",
+      "userId": "6498e438-50f1-7085-8062-7c91d4fd0bb1",
+      "upvotes": 0,
+      "reporter_email": "nitinmohan310@gmail.com"
+    },
+    {
+      "id": "r15",
+      "title": "Delivery truck double parked on Fulton Mall",
+      "category": "Traffic",
+      "description": "Truck blocking bus lane causing backups toward Adams Street.",
+      "severity": "low",
+      "status": "approved",
+      "tags": [
+        "Traffic",
+        "Obstruction"
+      ],
+      "location": {
+        "lat": 40.6897,
+        "lng": -73.9824
+      },
+      "reporter": "Priya Desai",
+      "attachments": [],
+      "createdAt": "2025-11-13T14:30:00Z",
+      "zoneId": "z1",
+      "userId": "8498c498-e041-7040-d2ed-0fc5d5e2a0f8",
+      "upvotes": 2,
+      "reporter_email": "maxtai.tw@gmail.com"
+    },
+    {
+      "id": "r16",
+      "title": "Crowded crosswalk near Dekalb Station",
+      "category": "Transit",
+      "description": "Long pedestrian wait times; signal timing feels off leading to crowd spillover.",
+      "severity": "low",
+      "status": "needs review",
+      "tags": [
+        "Transit",
+        "Pedestrian"
+      ],
+      "location": {
+        "lat": 40.6891,
+        "lng": -73.981
+      },
+      "reporter": "Noah Bennett",
+      "attachments": [],
+      "createdAt": "2025-11-13T14:37:00Z",
+      "zoneId": "z1",
+      "userId": "a4b88488-c021-70b9-25db-d750bad79ab9",
+      "upvotes": 0,
+      "reporter_email": "bill255203@gmail.com"
+    },
+    {
+      "id": "r17",
+      "title": "Elevated noise from after-hours construction",
+      "category": "Noise",
+      "description": "Jackhammering reported past permitted hours near Flatbush and State.",
+      "severity": "medium",
+      "status": "pending",
+      "tags": [
+        "Noise",
+        "Construction"
+      ],
+      "location": {
+        "lat": 40.6885,
+        "lng": -73.9798
+      },
+      "reporter": "Lena Alvarez",
+      "attachments": [],
+      "createdAt": "2025-11-13T14:45:00Z",
+      "zoneId": "z1",
+      "userId": "347874f8-c051-70af-a1e3-187b306bf348",
+      "upvotes": 4,
+      "reporter_email": "nb4048@nyu.edu"
+    },
+    {
+      "id": "r18",
+      "title": "Loose manhole cover near Nevins Street",
+      "category": "Road Hazard",
+      "description": "Cover rattles when cars pass; risk for cyclists.",
+      "severity": "medium",
+      "status": "approved",
+      "tags": [
+        "Road",
+        "Cycling"
+      ],
+      "location": {
+        "lat": 40.6881,
+        "lng": -73.9821
+      },
+      "reporter": "Marcus Hale",
+      "attachments": [],
+      "createdAt": "2025-11-13T14:52:00Z",
+      "updatedAt": "2025-11-13T15:05:00Z",
+      "zoneId": "z1",
+      "userId": "6498e438-50f1-7085-8062-7c91d4fd0bb1",
+      "upvotes": 5,
+      "reporter_email": "nitinmohan310@gmail.com"
+    },
+    {
+      "id": "r19",
+      "title": "Hazardous materials odor at Navy Yard gate",
+      "category": "Environmental Hazard",
+      "description": "Strong chemical odor drifting toward Flushing Ave entrance.",
+      "severity": "high",
+      "status": "pending",
+      "tags": [
+        "Environmental",
+        "Odor"
+      ],
+      "location": {
+        "lat": 40.7007,
+        "lng": -73.9729
+      },
+      "reporter": "Priya Desai",
+      "attachments": [],
+      "createdAt": "2025-11-13T15:02:00Z",
+      "zoneId": "z2",
+      "userId": "8498c498-e041-7040-d2ed-0fc5d5e2a0f8",
+      "upvotes": 1,
+      "reporter_email": "maxtai.tw@gmail.com"
+    },
+    {
+      "id": "r20",
+      "title": "Fallen signage near Atlantic Terminal",
+      "category": "Facilities",
+      "description": "Wayfinding sign knocked over by wind, partially blocking sidewalk.",
+      "severity": "low",
+      "status": "approved",
+      "tags": [
+        "Facilities",
+        "Obstruction"
+      ],
+      "location": {
+        "lat": 40.6839,
+        "lng": -73.9763
+      },
+      "reporter": "Noah Bennett",
+      "attachments": [],
+      "createdAt": "2025-11-13T15:10:00Z",
+      "zoneId": "z1",
+      "userId": "a4b88488-c021-70b9-25db-d750bad79ab9",
+      "upvotes": 0,
+      "reporter_email": "bill255203@gmail.com"
+    },
+    {
+      "id": "r21",
+      "title": "Erratic driver reported along Sands Street",
+      "category": "Traffic",
+      "description": "Vehicle weaving across bike lane; NYPD notified.",
+      "severity": "medium",
+      "status": "pending",
+      "tags": [
+        "Traffic",
+        "Police activity"
+      ],
+      "location": {
+        "lat": 40.7022,
+        "lng": -73.9869
+      },
+      "reporter": "Lena Alvarez",
+      "attachments": [],
+      "createdAt": "2025-11-13T15:17:00Z",
+      "zoneId": "z2",
+      "userId": "347874f8-c051-70af-a1e3-187b306bf348",
+      "upvotes": 2,
+      "reporter_email": "nb4048@nyu.edu"
+    },
+    {
+      "id": "r22",
+      "title": "Power outage affecting Jay Street storefronts",
+      "category": "Utilities",
+      "description": "Multiple stores reporting flickering lights and register outages.",
+      "severity": "medium",
+      "status": "needs review",
+      "tags": [
+        "Utilities",
+        "Business"
+      ],
+      "location": {
+        "lat": 40.6935,
+        "lng": -73.9872
+      },
+      "reporter": "Marcus Hale",
+      "attachments": [],
+      "createdAt": "2025-11-13T15:25:00Z",
+      "zoneId": "z1",
+      "userId": "6498e438-50f1-7085-8062-7c91d4fd0bb1",
+      "upvotes": 3,
+      "reporter_email": "nitinmohan310@gmail.com"
+    },
+    {
+      "id": "r23",
+      "title": "Encampment forming near Cadman Plaza",
+      "category": "Community",
+      "description": "Tents observed overnight; outreach teams requested.",
+      "severity": "low",
+      "status": "pending",
+      "tags": [
+        "Community",
+        "Outreach"
+      ],
+      "location": {
+        "lat": 40.699,
+        "lng": -73.9903
+      },
+      "reporter": "Priya Desai",
+      "attachments": [],
+      "createdAt": "2025-11-13T15:32:00Z",
+      "zoneId": "z2",
+      "userId": "8498c498-e041-7040-d2ed-0fc5d5e2a0f8",
+      "upvotes": 1,
+      "reporter_email": "maxtai.tw@gmail.com"
+    },
+    {
+      "id": "r24",
+      "title": "Elevator stuck at 141 Livingston lobby",
+      "category": "Facilities",
+      "description": "Passengers trapped for five minutes before alarm acknowledged.",
+      "severity": "medium",
+      "status": "approved",
+      "tags": [
+        "Facilities",
+        "Accessibility"
+      ],
+      "location": {
+        "lat": 40.6903,
+        "lng": -73.9887
+      },
+      "reporter": "Noah Bennett",
+      "attachments": [],
+      "createdAt": "2025-11-13T15:40:00Z",
+      "updatedAt": "2025-11-13T15:50:00Z",
+      "zoneId": "z1",
+      "userId": "a4b88488-c021-70b9-25db-d750bad79ab9",
+      "upvotes": 2,
+      "reporter_email": "bill255203@gmail.com"
+    },
+    {
+      "id": "r25",
+      "title": "Street performance drawing large crowd",
+      "category": "Event",
+      "description": "Crowd spilling into roadway near Albee Square; traffic agents requested.",
+      "severity": "low",
+      "status": "pending",
+      "tags": [
+        "Event",
+        "Crowd"
+      ],
+      "location": {
+        "lat": 40.6907,
+        "lng": -73.9829
+      },
+      "reporter": "Lena Alvarez",
+      "attachments": [],
+      "createdAt": "2025-11-13T15:47:00Z",
+      "zoneId": "z1",
+      "userId": "347874f8-c051-70af-a1e3-187b306bf348",
+      "upvotes": 0,
+      "reporter_email": "nb4048@nyu.edu"
+    },
+    {
+      "id": "r26",
+      "title": "Graffiti tagging along Bridge Street storefronts",
+      "category": "Vandalism",
+      "description": "Fresh spray paint observed on three rolling gates overnight.",
+      "severity": "low",
+      "status": "needs review",
+      "tags": [
+        "Vandalism",
+        "Property"
+      ],
+      "location": {
+        "lat": 40.6996,
+        "lng": -73.9866
+      },
+      "reporter": "Marcus Hale",
+      "attachments": [],
+      "createdAt": "2025-11-13T15:55:00Z",
+      "zoneId": "z2",
+      "userId": "6498e438-50f1-7085-8062-7c91d4fd0bb1",
+      "upvotes": 0,
+      "reporter_email": "nitinmohan310@gmail.com"
+    },
+    {
+      "id": "r27",
+      "title": "Animal control request near Commodore Barry Park",
+      "category": "Animal",
+      "description": "Aggressive stray dog reported chasing joggers near Flushing Ave edge.",
+      "severity": "medium",
+      "status": "pending",
+      "tags": [
+        "Animal",
+        "Safety"
+      ],
+      "location": {
+        "lat": 40.6984,
+        "lng": -73.9736
+      },
+      "reporter": "Priya Desai",
+      "attachments": [],
+      "createdAt": "2025-11-13T16:02:00Z",
+      "zoneId": "z2",
+      "userId": "8498c498-e041-7040-d2ed-0fc5d5e2a0f8",
+      "upvotes": 1,
+      "reporter_email": "maxtai.tw@gmail.com"
+    },
+    {
+      "id": "r28",
+      "title": "Hydrant knocked by vehicle on Bridge Plaza",
+      "category": "Infrastructure",
+      "description": "Hydrant tilted and leaking slowly; NYFD requested for shutoff.",
+      "severity": "medium",
+      "status": "approved",
+      "tags": [
+        "Infrastructure",
+        "Water"
+      ],
+      "location": {
+        "lat": 40.7041,
+        "lng": -73.9874
+      },
+      "reporter": "Noah Bennett",
+      "attachments": [],
+      "createdAt": "2025-11-13T16:10:00Z",
+      "zoneId": "z2",
+      "userId": "a4b88488-c021-70b9-25db-d750bad79ab9",
+      "upvotes": 3,
+      "reporter_email": "bill255203@gmail.com"
+    },
+    {
+      "id": "r29",
+      "title": "Tour bus idling near Washington Street",
+      "category": "Environmental Hazard",
+      "description": "Diesel fumes accumulating near popular photo spot; locals requesting enforcement.",
+      "severity": "low",
+      "status": "pending",
+      "tags": [
+        "Air quality",
+        "Traffic"
+      ],
+      "location": {
+        "lat": 40.7036,
+        "lng": -73.9909
+      },
+      "reporter": "Lena Alvarez",
+      "attachments": [],
+      "createdAt": "2025-11-13T16:18:00Z",
+      "zoneId": "z2",
+      "userId": "347874f8-c051-70af-a1e3-187b306bf348",
+      "upvotes": 2,
+      "reporter_email": "nb4048@nyu.edu"
+    },
+    {
+      "id": "r30",
+      "title": "Flooded bike lane under Manhattan Bridge",
+      "category": "Cycling",
+      "description": "Standing water forcing cyclists into traffic lane after rain.",
+      "severity": "medium",
+      "status": "approved",
+      "tags": [
+        "Cycling",
+        "Flooding"
+      ],
+      "location": {
+        "lat": 40.7061,
+        "lng": -73.9892
+      },
+      "reporter": "Marcus Hale",
+      "attachments": [],
+      "createdAt": "2025-11-13T16:25:00Z",
+      "zoneId": "z2",
+      "userId": "6498e438-50f1-7085-8062-7c91d4fd0bb1",
+      "upvotes": 4,
+      "reporter_email": "nitinmohan310@gmail.com"
+    },
+    {
+      "id": "fd63",
+      "title": "hello",
+      "category": "vandalism",
+      "description": "fillout",
+      "severity": "high",
+      "status": "pending",
+      "tags": [
+        "vandalism",
+        "accident",
+        "harassment"
+      ],
+      "location": null,
+      "reporter": "Priya Desai",
+      "attachments": [],
+      "createdAt": "2025-11-13T01:05:55.375Z",
+      "updatedAt": "2025-11-13T01:05:55.375Z",
+      "zoneId": "z1",
+      "userId": "8498c498-e041-7040-d2ed-0fc5d5e2a0f8",
+      "reporter_email": "maxtai.tw@gmail.com"
+    },
+    {
+      "id": "e39f",
+      "title": "Show photo on hover test incident",
+      "category": "test",
+      "description": "test",
+      "severity": "low",
+      "status": "approved",
+      "tags": [
+        "suspicious"
+      ],
+      "location": {
+        "lat": 40.697071,
+        "lng": -73.985785
+      },
+      "reporter": "Noah Bennett",
+      "attachments": [
+        "https://res.cloudinary.com/dnxdhsjbo/image/upload/v1761780585/arteza3uhujnblawsvox.png"
+      ],
+      "createdAt": "2025-11-13T23:29:45.882Z",
+      "updatedAt": "2025-11-13T23:29:45.882Z",
+      "zoneId": "z1",
+      "userId": "a4b88488-c021-70b9-25db-d750bad79ab9",
+      "locationLabel": "22 Chapel Street, Brooklyn, New York 11201, United States",
+      "reporter_email": "bill255203@gmail.com"
+    },
+    {
+      "id": "d9c3",
+      "title": "gmailtest",
+      "category": "gmail",
+      "description": "gmail",
+      "severity": "low",
+      "status": "needs review",
+      "tags": [
+        "accident"
+      ],
+      "location": {
+        "lat": 40.764542,
+        "lng": -73.969109
+      },
+      "reporter": "Pin-Ray Liao",
+      "reporterFirstName": "Pin-Ray",
+      "reporterLastName": "Liao",
+      "isAnonymous": false,
+      "attachments": [],
+      "createdAt": "2025-12-03T20:29:06.564Z",
+      "updatedAt": "2025-12-03T20:43:56.931Z",
+      "zoneId": "z1",
+      "userId": "a4b88488-c021-70b9-25db-d750bad79ab9",
+      "locationLabel": "540 Park Ave, New York City, New York 10065, United States",
+      "submittedAt": "1 second ago",
+      "upvotes": 0,
+      "adminFeedback": "nonno",
+      "reporter_email": "bill255203@gmail.com"
+    },
+    {
+      "id": "6805",
+      "title": "email?",
+      "category": "d",
+      "description": "d",
+      "severity": "medium",
+      "status": "needs review",
+      "tags": [
+        "accident"
+      ],
+      "location": {
+        "lat": 40.746619,
+        "lng": -73.928857
+      },
+      "reporter": "Pin-Ray Liao",
+      "reporterFirstName": "Pin-Ray",
+      "reporterLastName": "Liao",
+      "isAnonymous": false,
+      "attachments": [],
+      "createdAt": "2025-12-03T20:54:33.038Z",
+      "updatedAt": "2025-12-03T20:57:10.923Z",
+      "zoneId": "z1",
+      "userId": "a4b88488-c021-70b9-25db-d750bad79ab9",
+      "locationLabel": "4116 36th Street, Long Island City, New York 11101, United States",
+      "submittedAt": "1 second ago",
+      "upvotes": 0,
+      "adminFeedback": "yes",
+      "reporter_email": "bill255203@gmail.com"
+    }
+  ],
+  "alertSubscriptions": [
+    {
+      "id": "a1",
+      "reporter": "Bill Liao",
+      "email": "youaredead629@gmail.com",
+      "location": {
+        "lat": 40.693,
+        "lng": -73.986
+      }
+    },
+    {
+      "id": "a2",
+      "reporter": "Sasha Patel",
+      "email": "sasha.patel@example.com",
+      "location": {
+        "lat": 40.7061,
+        "lng": -73.9892
+      }
+    }
+  ],
+  "followUpRequests": [
+    {
+      "id": "fr-seed",
+      "reportId": "r3",
+      "reporterId": "8498c498-e041-7040-d2ed-0fc5d5e2a0f8",
+      "reporter": "Priya Desai",
+      "status": "pending",
+      "feedback": "Please add approximate road segment or cross streets so crews can locate the hazard.",
+      "requestedAt": "2025-11-12T12:05:00Z",
+      "reviewer": "admin-demo",
+      "reviewLink": "/review-request/r3"
+    },
+    {
+      "id": "fr-19824b3d-13da-4d52-9ef3-6378ee5b1c76",
+      "reportId": "r2",
+      "reporterId": "6498e438-50f1-7085-8062-7c91d4fd0bb1",
+      "reporter": "Marcus Hale",
+      "status": "resubmitted",
+      "feedback": "today is very cold",
+      "requestedAt": "2025-11-12T19:57:27.097Z",
+      "reviewer": "admin-demo",
+      "reviewLink": "/review-request/r2",
+      "respondedAt": "2025-11-13T02:44:48.450Z"
+    },
+    {
+      "id": "fr-08ba2039-cbdf-4ac6-99ab-4f7739885257",
+      "reportId": null,
+      "reporterId": "a4b88488-c021-70b9-25db-d750bad79ab9",
+      "reporter": "Pin-Ray Liao",
+      "status": "pending",
+      "feedback": "testing followup message",
+      "requestedAt": "2025-11-15T00:01:16.470Z",
+      "reviewer": "admin-demo",
+      "reviewLink": "/review-request/7394"
+    },
+    {
+      "id": "fr-c82c4210-a003-480d-b883-d9854b8202c4",
+      "reportId": null,
+      "reporterId": "a4b88488-c021-70b9-25db-d750bad79ab9",
+      "reporter": "Pin-Ray Liao",
+      "status": "pending",
+      "feedback": "hihi",
+      "requestedAt": "2025-11-13T00:07:44.918Z",
+      "reviewer": "admin-demo",
+      "reviewLink": "/review-request/7394"
+    },
+    {
+      "id": "fr-5e0c59e5-3eb3-4394-b47b-89db72b72276",
+      "reportId": null,
+      "reporterId": "a4b88488-c021-70b9-25db-d750bad79ab9",
+      "reporter": "Pin-Ray Liao",
+      "status": "pending",
+      "feedback": "it is not accaptable",
+      "requestedAt": "2025-12-03T20:23:26.927Z",
+      "reviewer": "admin-demo",
+      "reviewLink": "/review-request/6ce5"
+    },
+    {
+      "id": "fr-9fdcf040-957d-4c1a-bb92-cd6d9ab06a26",
+      "reportId": null,
+      "reporterId": "a4b88488-c021-70b9-25db-d750bad79ab9",
+      "reporter": "Pin-Ray Liao",
+      "status": "pending",
+      "feedback": "not accap again",
+      "requestedAt": "2025-12-03T20:26:12.328Z",
+      "reviewer": "admin-demo",
+      "reviewLink": "/review-request/6ce5"
+    },
+    {
+      "id": "fr-776bd2bd-0064-4a82-8d68-4c2e0c9f85d3",
+      "reportId": null,
+      "reporterId": "a4b88488-c021-70b9-25db-d750bad79ab9",
+      "reporter": "Pin-Ray Liao",
+      "status": "pending",
+      "feedback": "this nono",
+      "requestedAt": "2025-12-03T20:27:03.444Z",
+      "reviewer": "admin-demo",
+      "reviewLink": "/review-request/a039"
+    },
+    {
+      "id": "fr-c5dbed86-14e8-4e1d-b7fa-9ada36d22b6c",
+      "reportId": "d9c3",
+      "reporterId": "a4b88488-c021-70b9-25db-d750bad79ab9",
+      "reporter": "Pin-Ray Liao",
+      "status": "pending",
+      "feedback": "nono",
+      "requestedAt": "2025-12-03T20:29:35.529Z",
+      "reviewer": "admin-demo",
+      "reviewLink": "/review-request/d9c3"
+    },
+    {
+      "id": "fr-d01cd328-f368-4f49-9cb5-135861d5c825",
+      "reportId": "d9c3",
+      "reporterId": "a4b88488-c021-70b9-25db-d750bad79ab9",
+      "reporter": "Pin-Ray Liao",
+      "status": "pending",
+      "feedback": "nono",
+      "requestedAt": "2025-12-03T20:41:00.331Z",
+      "reviewer": "admin-demo",
+      "reviewLink": "/review-request/d9c3"
+    },
+    {
+      "id": "fr-846000b2-22e9-4a64-bd48-1e877b85b1e6",
+      "reportId": "d9c3",
+      "reporterId": "a4b88488-c021-70b9-25db-d750bad79ab9",
+      "reporter": "Pin-Ray Liao",
+      "status": "pending",
+      "feedback": "nonno",
+      "requestedAt": "2025-12-03T20:43:56.931Z",
+      "reviewer": "admin-demo",
+      "reviewLink": "/review-request/d9c3"
+    },
+    {
+      "id": "fr-fe68d8d6-4b7e-46ce-b104-c7179bf417b1",
+      "reportId": "6805",
+      "reporterId": "a4b88488-c021-70b9-25db-d750bad79ab9",
+      "reporter": "Pin-Ray Liao",
+      "status": "pending",
+      "feedback": "nono",
+      "requestedAt": "2025-12-03T20:55:33.872Z",
+      "reviewer": "admin-demo",
+      "reviewLink": "/review-request/6805"
+    },
+    {
+      "id": "fr-09cbf0fb-aff3-4b71-b1c5-023b259add6c",
+      "reportId": "6805",
+      "reporterId": "a4b88488-c021-70b9-25db-d750bad79ab9",
+      "reporter": "Pin-Ray Liao",
+      "status": "pending",
+      "feedback": "yes",
+      "requestedAt": "2025-12-03T20:57:10.923Z",
+      "reviewer": "admin-demo",
+      "reviewLink": "/review-request/6805"
+    }
+  ],
+  "mailchimpEvents": [
+    {
+      "id": "evt-a6ae903b-a0db-4c52-98f6-6f2b2f201648",
+      "createdAt": "2025-11-12T19:55:08.720Z",
+      "mode": "mock",
+      "type": "high-severity-alert",
+      "subject": "[SafeZone] High Severity Alert: Fallen Tree Blocking Sidewalk",
+      "html": "\n      <h1>Fallen Tree Blocking Sidewalk</h1>\n      <p><strong>Category:</strong> Environmental Hazard</p>\n      <p><strong>Severity:</strong> high</p>\n      <p><strong>Location:</strong> 40.6955, -73.985</p>\n      <p>A large tree has fallen and is blocking the sidewalk.</p>\n    ",
+      "reportId": "r1",
+      "recipients": [
+        {
+          "email": "youaredead629@gmail.com",
+          "name": "Bill Liao"
+        },
+        {
+          "email": "sasha.patel@example.com",
+          "name": "Sasha Patel"
+        }
+      ]
+    },
+    {
+      "id": "evt-54ea1daa-14d9-4b69-999a-09ddcd8164da",
+      "createdAt": "2025-11-12T19:57:27.123Z",
+      "mode": "mock",
+      "type": "follow-up-request",
+      "subject": "[SafeZone] Follow-up Requested: Construction Zone",
+      "html": "\n      <p>Hi Sasha Patel,</p>\n      <p>The SafeZone admin team has requested some updates on your report <strong>Construction Zone</strong>.</p>\n      <p><strong>Admin Feedback:</strong> today is very cold</p>\n      <p>You can review the feedback and edit your report here: <a href=\"http://localhost:5173/review-request/r2\">http://localhost:5173/review-request/r2</a></p>\n      <p>Thank you for keeping the community safe.</p>\n    ",
+      "reportId": "r2",
+      "recipients": [
+        {
+          "email": "sasha.patel@example.com",
+          "name": "Sasha Patel"
+        }
+      ],
+      "reviewer": "admin-demo"
+    },
+    {
+      "id": "evt-b7dc2030-1877-4325-a44f-cf01ab0285c8",
+      "createdAt": "2025-11-15T00:01:16.956Z",
+      "mode": "fallback-on-error",
+      "subject": "[SafeZone] Follow-up Requested: limit2",
+      "html": "\n      <p>Hi Pin-Ray Liao,</p>\n      <p>The SafeZone admin team has requested some updates on your report <strong>limit2</strong>.</p>\n      <p><strong>Admin Feedback:</strong> testing followup message</p>\n      <p>You can review the feedback and edit your report here: <a href=\"http://localhost:5173/review-request/7394\">http://localhost:5173/review-request/7394</a></p>\n      <p>Thank you for keeping the community safe.</p>\n    ",
+      "recipients": [
+        {
+          "email": "pin.ray.liao@example.com",
+          "name": "Pin-Ray Liao"
+        }
+      ],
+      "error": "{\"status\":\"error\",\"code\":401,\"name\":\"Invalid_Key\",\"message\":\"Invalid API key\"}"
+    },
+    {
+      "id": "evt-d342e193-2cf5-44c6-ae2f-254e9831fb5d",
+      "createdAt": "2025-11-13T00:07:45.394Z",
+      "mode": "fallback-on-error",
+      "subject": "[SafeZone] Follow-up Requested: limit2",
+      "html": "\n      <p>Hi Pin-Ray Liao,</p>\n      <p>The SafeZone admin team has requested some updates on your report <strong>limit2</strong>.</p>\n      <p><strong>Admin Feedback:</strong> hihi</p>\n      <p>You can review the feedback and edit your report here: <a href=\"http://localhost:5173/review-request/7394\">http://localhost:5173/review-request/7394</a></p>\n      <p>Thank you for keeping the community safe.</p>\n    ",
+      "recipients": [
+        {
+          "email": "pin.ray.liao@example.com",
+          "name": "Pin-Ray Liao"
+        }
+      ],
+      "error": "{\"status\":\"error\",\"code\":401,\"name\":\"Invalid_Key\",\"message\":\"Invalid API key\"}"
+    },
+    {
+      "id": "evt-3db24e6c-65c3-4794-9b81-fb356ba293dd",
+      "createdAt": "2025-12-03T20:23:27.228Z",
+      "mode": "webhook-log",
+      "type": "follow-up-request",
+      "subject": "[SafeZone] Follow-up Requested: gmail test",
+      "html": "\n      <p>Hi Pin-Ray Liao,</p>\n      <p>The SafeZone admin team has requested some updates on your report <strong>gmail test</strong>.</p>\n      <p><strong>Admin Feedback:</strong> it is not accaptable</p>\n      <p>You can review the feedback and edit your report here: <a href=\"http://localhost:5173/review-request/6ce5\">http://localhost:5173/review-request/6ce5</a></p>\n      <p>Thank you for keeping the community safe.</p>\n    ",
+      "reportId": null,
+      "recipients": [
+        {
+          "email": "Pin-Ray Liao",
+          "name": "Pin-Ray Liao"
+        }
+      ],
+      "reviewer": "admin-demo",
+      "timestamp": "2025-12-03T20:23:26.953Z",
+      "note": "Logged webhook delivery"
+    },
+    {
+      "id": "evt-bc42e7f9-8492-4c86-9c4b-a6e92d73b613",
+      "createdAt": "2025-12-03T20:26:12.605Z",
+      "mode": "webhook-log",
+      "type": "follow-up-request",
+      "subject": "[SafeZone] Follow-up Requested: gmail test",
+      "html": "\n      <p>Hi Pin-Ray Liao,</p>\n      <p>The SafeZone admin team has requested some updates on your report <strong>gmail test</strong>.</p>\n      <p><strong>Admin Feedback:</strong> not accap again</p>\n      <p>You can review the feedback and edit your report here: <a href=\"http://localhost:5173/review-request/6ce5\">http://localhost:5173/review-request/6ce5</a></p>\n      <p>Thank you for keeping the community safe.</p>\n    ",
+      "reportId": null,
+      "recipients": [
+        {
+          "email": "Pin-Ray Liao",
+          "name": "Pin-Ray Liao"
+        }
+      ],
+      "reviewer": "admin-demo",
+      "timestamp": "2025-12-03T20:26:12.354Z",
+      "note": "Logged webhook delivery"
+    },
+    {
+      "id": "evt-6c4df066-8daf-4927-b553-396f1f0c2554",
+      "createdAt": "2025-12-03T20:27:03.702Z",
+      "mode": "webhook-log",
+      "type": "follow-up-request",
+      "subject": "[SafeZone] Follow-up Requested: gmailtest",
+      "html": "\n      <p>Hi Pin-Ray Liao,</p>\n      <p>The SafeZone admin team has requested some updates on your report <strong>gmailtest</strong>.</p>\n      <p><strong>Admin Feedback:</strong> this nono</p>\n      <p>You can review the feedback and edit your report here: <a href=\"http://localhost:5173/review-request/a039\">http://localhost:5173/review-request/a039</a></p>\n      <p>Thank you for keeping the community safe.</p>\n    ",
+      "reportId": null,
+      "recipients": [
+        {
+          "email": "Pin-Ray Liao",
+          "name": "Pin-Ray Liao"
+        }
+      ],
+      "reviewer": "admin-demo",
+      "timestamp": "2025-12-03T20:27:03.467Z",
+      "note": "Logged webhook delivery"
+    },
+    {
+      "id": "evt-5ea873bf-3985-4e7d-be3d-9296f2176ee8",
+      "createdAt": "2025-12-03T20:29:35.862Z",
+      "mode": "webhook-log",
+      "type": "follow-up-request",
+      "subject": "[SafeZone] Follow-up Requested: gmailtest",
+      "html": "\n      <p>Hi Pin-Ray Liao,</p>\n      <p>The SafeZone admin team has requested some updates on your report <strong>gmailtest</strong>.</p>\n      <p><strong>Admin Feedback:</strong> nono</p>\n      <p>You can review the feedback and edit your report here: <a href=\"http://localhost:5173/review-request/d9c3\">http://localhost:5173/review-request/d9c3</a></p>\n      <p>Thank you for keeping the community safe.</p>\n    ",
+      "reportId": "d9c3",
+      "recipients": [
+        {
+          "email": "Pin-Ray Liao",
+          "name": "Pin-Ray Liao"
+        }
+      ],
+      "reviewer": "admin-demo",
+      "timestamp": "2025-12-03T20:29:35.553Z",
+      "note": "Logged webhook delivery"
+    },
+    {
+      "id": "evt-2b2fe90c-a3fd-43b8-9cee-44a4590ff3a3",
+      "createdAt": "2025-12-03T20:41:00.553Z",
+      "mode": "webhook-log",
+      "type": "follow-up-request",
+      "subject": "[SafeZone] Follow-up Requested: gmailtest",
+      "html": "\n      <p>Hi Pin-Ray Liao,</p>\n      <p>The SafeZone admin team has requested some updates on your report <strong>gmailtest</strong>.</p>\n      <p><strong>Admin Feedback:</strong> nono</p>\n      <p>You can review the feedback and edit your report here: <a href=\"http://localhost:5173/review-request/d9c3\">http://localhost:5173/review-request/d9c3</a></p>\n      <p>Thank you for keeping the community safe.</p>\n    ",
+      "reportId": "d9c3",
+      "recipients": [
+        {
+          "email": "Pin-Ray Liao",
+          "name": "Pin-Ray Liao"
+        }
+      ],
+      "reviewer": "admin-demo",
+      "timestamp": "2025-12-03T20:41:00.360Z",
+      "note": "Logged webhook delivery"
+    },
+    {
+      "id": "evt-ee37b633-2ccd-4e46-95cc-4baab691f85e",
+      "createdAt": "2025-12-03T20:43:57.272Z",
+      "mode": "webhook-log",
+      "type": "follow-up-request",
+      "subject": "[SafeZone] Follow-up Requested: gmailtest",
+      "html": "\n      <p>Hi Pin-Ray Liao,</p>\n      <p>The SafeZone admin team has requested some updates on your report <strong>gmailtest</strong>.</p>\n      <p><strong>Admin Feedback:</strong> nonno</p>\n      <p>You can review the feedback and edit your report here: <a href=\"http://localhost:5173/review-request/d9c3\">http://localhost:5173/review-request/d9c3</a></p>\n      <p>Thank you for keeping the community safe.</p>\n    ",
+      "reportId": "d9c3",
+      "recipients": [
+        {
+          "email": "a4b88488.c021.70b9.25db.d750bad79ab9@example.com",
+          "name": "Pin-Ray Liao"
+        }
+      ],
+      "reviewer": "admin-demo",
+      "timestamp": "2025-12-03T20:43:56.956Z",
+      "note": "Logged webhook delivery"
+    },
+    {
+      "id": "evt-6ce7ced5-cf72-486a-a9ec-f07b78a37c97",
+      "createdAt": "2025-12-03T20:55:34.154Z",
+      "mode": "webhook-log",
+      "type": "follow-up-request",
+      "subject": "[SafeZone] Follow-up Requested: email?",
+      "html": "\n      <p>Hi Pin-Ray Liao,</p>\n      <p>The SafeZone admin team has requested some updates on your report <strong>email?</strong>.</p>\n      <p><strong>Admin Feedback:</strong> nono</p>\n      <p>You can review the feedback and edit your report here: <a href=\"http://localhost:5173/review-request/6805\">http://localhost:5173/review-request/6805</a></p>\n      <p>Thank you for keeping the community safe.</p>\n    ",
+      "reportId": "6805",
+      "recipients": [
+        {
+          "email": "bill255203@gmail.com",
+          "name": "Pin-Ray Liao"
+        }
+      ],
+      "reviewer": "admin-demo",
+      "timestamp": "2025-12-03T20:55:33.896Z",
+      "note": "Logged webhook delivery"
+    },
+    {
+      "id": "evt-e828e50b-acb2-4ac3-828d-21bb3bf32fc3",
+      "createdAt": "2025-12-03T20:57:11.200Z",
+      "mode": "webhook-log",
+      "type": "follow-up-request",
+      "subject": "[SafeZone] Follow-up Requested: email?",
+      "html": "\n      <p>Hi Pin-Ray Liao,</p>\n      <p>The SafeZone admin team has requested some updates on your report <strong>email?</strong>.</p>\n      <p><strong>Admin Feedback:</strong> yes</p>\n      <p>You can review the feedback and edit your report here: <a href=\"http://localhost:5173/review-request/6805\">http://localhost:5173/review-request/6805</a></p>\n      <p>Thank you for keeping the community safe.</p>\n    ",
+      "reportId": "6805",
+      "recipients": [
+        {
+          "email": "bill255203@gmail.com",
+          "name": "Pin-Ray Liao"
+        }
+      ],
+      "reviewer": "admin-demo",
+      "timestamp": "2025-12-03T20:57:10.950Z",
+      "note": "Logged webhook delivery"
+    }
+  ],
+  "votes": []
+}

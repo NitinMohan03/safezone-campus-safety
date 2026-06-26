@@ -2,7 +2,7 @@
   "name": "safezone-mock-api",
   "version": "1.0.0",
   "scripts": {
-    "start": "json-server db.json --port ${PORT:-3001}"
+    "start": "json-server db.json --port ${PORT:-3001} --host 0.0.0.0"
   },
   "dependencies": {
     "json-server": "0.17.4"

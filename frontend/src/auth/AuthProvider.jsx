@@ -31,6 +31,7 @@ const MOCK_USERS = {
       family_name: "User",
     },
     groups: ["Admins"],
+    isAdmin: true,
   },
   user: {
     username: "user@example.com",
@@ -69,9 +70,11 @@ function mapUserPayload(user) {
     user.username ||
     "";
 
-  const isAdmin = Array.isArray(groups)
-    ? groups.some((group) => String(group).toLowerCase() === ADMIN_GROUP_NAME)
-    : false;
+  const isAdmin =
+    user.isAdmin === true ||
+    (Array.isArray(groups)
+      ? groups.some((group) => String(group).toLowerCase() === ADMIN_GROUP_NAME)
+      : false);
 
   return {
     username: user.username || user.attributes?.email,

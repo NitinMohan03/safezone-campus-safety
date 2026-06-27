@@ -10,10 +10,7 @@ const STATUS_PRESETS = [
 ];
 
 const formatStatusLabel = (value) =>
-  value
-    .split(" ")
-    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-    .join(" ");
+  value.split(" ").map((w) => w.charAt(0).toUpperCase() + w.slice(1)).join(" ");
 
 function getRelativeTime(createdAt) {
   const now = new Date();
@@ -23,16 +20,47 @@ function getRelativeTime(createdAt) {
   const diffMin = Math.floor(diffSec / 60);
   const diffHour = Math.floor(diffMin / 60);
   const diffDay = Math.floor(diffHour / 24);
-
-  if (diffSec < 60) return `${diffSec} second${diffSec === 1 ? "" : "s"} ago`;
-  if (diffMin < 60) return `${diffMin} minute${diffMin === 1 ? "" : "s"} ago`;
-  if (diffHour < 24) return `${diffHour} hour${diffHour === 1 ? "" : "s"} ago`;
-  return `${diffDay} day${diffDay === 1 ? "" : "s"} ago`;
+  if (diffSec < 60) return `${diffSec}s ago`;
+  if (diffMin < 60) return `${diffMin}m ago`;
+  if (diffHour < 24) return `${diffHour}h ago`;
+  return `${diffDay}d ago`;
 }
+
+function getCategoryIcon(tags) {
+  const s = (tags || []).join(" ").toLowerCase();
+  if (s.includes("fire") || s.includes("gas")) return "🔥";
+  if (s.includes("flood") || s.includes("water")) return "💧";
+  if (s.includes("road") || s.includes("traffic") || s.includes("cycling")) return "🚗";
+  if (s.includes("crime") || s.includes("theft") || s.includes("assault")) return "🚨";
+  if (s.includes("medical") || s.includes("injury")) return "🏥";
+  if (s.includes("power") || s.includes("electric")) return "⚡";
+  if (s.includes("hazard") || s.includes("emergency")) return "⚠️";
+  return "📍";
+}
+
+const SEVERITY_CONFIG = {
+  high: {
+    border: "border-l-rose-500",
+    badge: "bg-rose-100 text-rose-700 ring-1 ring-rose-200",
+    label: "HIGH",
+  },
+  medium: {
+    border: "border-l-amber-400",
+    badge: "bg-amber-100 text-amber-700 ring-1 ring-amber-200",
+    label: "MED",
+  },
+  low: {
+    border: "border-l-emerald-500",
+    badge: "bg-emerald-100 text-emerald-700 ring-1 ring-emerald-200",
+    label: "LOW",
+  },
+};
 
 function LiveFeedPage() {
   const [severityFilter, setSeverityFilter] = useState("all");
   const [statusFilter, setStatusFilter] = useState("approved");
+  const [searchQuery, setSearchQuery] = useState("");
+  const [sortBy, setSortBy] = useState("newest");
   const [upvoteMap, setUpvoteMap] = useState({});
   const [votedReports, setVotedReports] = useState([]);
   const [subscriptionEmail, setSubscriptionEmail] = useState("");
@@ -43,20 +71,12 @@ function LiveFeedPage() {
   const [subscriptionId, setSubscriptionId] = useState(null);
   const [subscriptionLoading, setSubscriptionLoading] = useState(false);
 
-  const {
-    reports,
-    isLoading: reportsLoading,
-    error: reportsError,
-  } = useReports();
+  const { reports, isLoading: reportsLoading, error: reportsError } = useReports();
   const { user } = useAuth();
 
   useEffect(() => {
     const derivedEmail =
-      user?.attributes?.email ||
-      user?.email ||
-      user?.username ||
-      user?.attributes?.name ||
-      "";
+      user?.attributes?.email || user?.email || user?.username || user?.attributes?.name || "";
     if (derivedEmail) setSubscriptionEmail(derivedEmail);
   }, [user]);
 
@@ -68,9 +88,7 @@ function LiveFeedPage() {
         const records = await api.alerts.getAll();
         if (!active || !Array.isArray(records)) return;
         const existing = records.find(
-          (r) =>
-            r?.email &&
-            r.email.toLowerCase() === subscriptionEmail.toLowerCase()
+          (r) => r?.email && r.email.toLowerCase() === subscriptionEmail.toLowerCase()
         );
         if (existing?.id) {
           setSubscriptionId(existing.id);
@@ -85,23 +103,18 @@ function LiveFeedPage() {
         if (active) setSubscriptionLoading(false);
       }
     }
-
     if (subscriptionEmail) {
       loadExistingSubscription();
     } else {
       setSubscriptionId(null);
       setSubscriptionSuccess("");
     }
-    return () => {
-      active = false;
-    };
+    return () => { active = false; };
   }, [subscriptionEmail]);
 
   useEffect(() => {
     const init = {};
-    reports.forEach((r) => {
-      init[r.id] = r.upvotes || 0;
-    });
+    reports.forEach((r) => { init[r.id] = r.upvotes || 0; });
     setUpvoteMap(init);
   }, [reports]);
 
@@ -119,31 +132,18 @@ function LiveFeedPage() {
   };
 
   const handleSubscribeNearby = () => {
-    if (subscriptionId) {
-      setSubscriptionSuccess("You are already subscribed.");
-      return;
-    }
+    if (subscriptionId) { setSubscriptionSuccess("You are already subscribed."); return; }
     setSubscriptionError(null);
     setSubscriptionSuccess("");
     setUnsubscribing(false);
-    if (!subscriptionEmail.trim()) {
-      setSubscriptionError("Email is required to subscribe.");
-      return;
-    }
-    if (!navigator.geolocation) {
-      setSubscriptionError("Geolocation not available in this browser.");
-      return;
-    }
-
+    if (!subscriptionEmail.trim()) { setSubscriptionError("Email is required."); return; }
+    if (!navigator.geolocation) { setSubscriptionError("Geolocation not available."); return; }
     setSubscribing(true);
     navigator.geolocation.getCurrentPosition(
       async ({ coords }) => {
         const payload = {
           id: `sub-${crypto.randomUUID?.() || Date.now()}`,
-          reporter:
-            user?.attributes?.name ||
-            user?.username ||
-            subscriptionEmail.trim(),
+          reporter: user?.attributes?.name || user?.username || subscriptionEmail.trim(),
           email: subscriptionEmail.trim(),
           location: {
             lat: Number(coords.latitude.toFixed(6)),
@@ -153,9 +153,7 @@ function LiveFeedPage() {
         try {
           await api.alerts.create(payload);
           setSubscriptionId(payload.id);
-          setSubscriptionSuccess(
-            "Subscribed to alerts near your current location."
-          );
+          setSubscriptionSuccess("Subscribed to alerts near your location.");
         } catch (err) {
           setSubscriptionError(err.message || "Unable to subscribe right now.");
         } finally {
@@ -163,7 +161,7 @@ function LiveFeedPage() {
         }
       },
       (err) => {
-        setSubscriptionError(err.message || "Unable to get your location.");
+        setSubscriptionError(err.message || "Unable to get location.");
         setSubscribing(false);
       },
       { enableHighAccuracy: true, timeout: 8000, maximumAge: 0 }
@@ -171,13 +169,9 @@ function LiveFeedPage() {
   };
 
   const handleUnsubscribeNearby = async () => {
-    if (!subscriptionId) {
-      setSubscriptionError("No active nearby subscription found.");
-      return;
-    }
+    if (!subscriptionId) { setSubscriptionError("No active subscription found."); return; }
     setSubscriptionError(null);
     setSubscriptionSuccess("");
-    setSubscribing(false);
     setUnsubscribing(true);
     try {
       await api.alerts.delete(subscriptionId);
@@ -190,7 +184,6 @@ function LiveFeedPage() {
     }
   };
 
-  // Real derived stats — replaces hardcoded countUp values
   const approvedCount = useMemo(
     () => reports.filter((r) => r.status === "approved").length,
     [reports]
@@ -200,160 +193,232 @@ function LiveFeedPage() {
     [reports]
   );
   const needsReviewCount = useMemo(
-    () =>
-      reports.filter(
-        (r) => r.status === "needs review" || r.status === "pending"
-      ).length,
+    () => reports.filter((r) => r.status === "needs review" || r.status === "pending").length,
     [reports]
   );
 
   const statusOptions = useMemo(() => {
     const knownValues = STATUS_PRESETS.map(({ value }) => value);
     const derivedStatuses = Array.from(
-      new Set(
-        reports
-          .map((incident) => (incident.status || "").toLowerCase())
-          .filter(Boolean)
-      )
+      new Set(reports.map((i) => (i.status || "").toLowerCase()).filter(Boolean))
     );
     const extras = derivedStatuses
-      .filter((status) => !knownValues.includes(status))
-      .map((status) => ({ value: status, label: formatStatusLabel(status) }));
+      .filter((s) => !knownValues.includes(s))
+      .map((s) => ({ value: s, label: formatStatusLabel(s) }));
     return [...STATUS_PRESETS, ...extras];
   }, [reports]);
 
   const filteredIncidents = useMemo(() => {
+    const q = searchQuery.toLowerCase();
     return [...reports]
       .filter((incident) => {
         const severity = (incident.severity || "unknown").toLowerCase();
         const status = (incident.status || "unknown").toLowerCase();
-        const matchesSeverity =
-          severityFilter === "all" || severity === severityFilter;
+        const matchesSeverity = severityFilter === "all" || severity === severityFilter;
         const matchesStatus = statusFilter === "all" || status === statusFilter;
-        return matchesSeverity && matchesStatus;
+        const matchesSearch =
+          !q ||
+          (incident.title || "").toLowerCase().includes(q) ||
+          (incident.description || "").toLowerCase().includes(q) ||
+          (incident.tags || []).some((t) => t.toLowerCase().includes(q));
+        return matchesSeverity && matchesStatus && matchesSearch;
       })
       .sort((a, b) => {
-        const upvotesA = upvoteMap[a.id] ?? a.upvotes ?? 0;
-        const upvotesB = upvoteMap[b.id] ?? b.upvotes ?? 0;
-        if (upvotesA !== upvotesB) return upvotesB - upvotesA;
-        return (
-          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-        );
+        if (sortBy === "upvotes") {
+          return (upvoteMap[b.id] ?? b.upvotes ?? 0) - (upvoteMap[a.id] ?? a.upvotes ?? 0);
+        }
+        if (sortBy === "severity") {
+          const order = { high: 0, medium: 1, low: 2 };
+          return (order[a.severity] ?? 3) - (order[b.severity] ?? 3);
+        }
+        return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
       });
-  }, [reports, severityFilter, statusFilter, upvoteMap]);
-
-  const baseCardClasses =
-    "flex flex-col gap-5 rounded-2xl border border-slate-900/10 bg-white/95 p-6 shadow-xl transition-all duration-200 hover:-translate-y-1 hover:shadow-2xl";
-
-  const severityStyles = {
-    high: {
-      card: "border-rose-600/40 bg-gradient-to-br from-rose-100/90 via-white/90 to-rose-200/40 shadow-[0_22px_48px_rgba(185,28,28,0.22)]",
-      type: "bg-rose-700 text-rose-50",
-      tag: "bg-rose-100/60 text-rose-900/80",
-      footer: "rounded-2xl bg-rose-100/50 px-4 py-3 shadow-inner shadow-rose-400/20",
-      severity: "rounded-full bg-rose-600 px-3 py-0.5 text-xs font-bold text-white shadow-md shadow-rose-500/30",
-    },
-    medium: {
-      card: "border-amber-500/40 bg-gradient-to-br from-amber-100/80 via-white/90 to-amber-200/50 shadow-[0_20px_44px_rgba(217,119,6,0.18)]",
-      type: "bg-amber-100 text-amber-800",
-      tag: "bg-amber-200/70 text-amber-700",
-      footer: "rounded-2xl bg-amber-100/50 px-4 py-3 shadow-inner shadow-amber-400/20",
-      severity: "rounded-full bg-amber-500 px-3 py-0.5 text-xs font-bold text-white shadow-md shadow-amber-500/30",
-    },
-    low: {
-      card: "border-emerald-500/40 bg-gradient-to-br from-emerald-100/80 via-white/90 to-emerald-200/50 shadow-[0_18px_40px_rgba(22,163,74,0.18)]",
-      type: "bg-emerald-100 text-emerald-700",
-      tag: "bg-emerald-200/70 text-emerald-700",
-      footer: "rounded-2xl bg-emerald-100/50 px-4 py-3 shadow-inner shadow-emerald-400/20",
-      severity: "rounded-full bg-emerald-600 px-3 py-0.5 text-xs font-bold text-white shadow-md shadow-emerald-500/30",
-    },
-    default: { card: "", type: "", tag: "", footer: "", severity: "" },
-  };
+  }, [reports, severityFilter, statusFilter, searchQuery, sortBy, upvoteMap]);
 
   const resolveReporterName = (incident) => {
     const fullName = [incident.reporterFirstName, incident.reporterLastName]
-      .filter(Boolean)
-      .join(" ")
-      .trim();
+      .filter(Boolean).join(" ").trim();
     return fullName || incident.reporter || "Community member";
   };
 
   return (
-    <div className="flex flex-col gap-10">
-      <header className="flex flex-col gap-6 rounded-[24px] border border-slate-900/10 bg-white p-8 shadow-[0_22px_46px_rgba(15,23,42,0.08)]">
-        <div className="flex flex-col gap-3">
-          <div className="flex flex-wrap items-center gap-3">
-            <h1 className="text-4xl font-bold text-slate-950 [text-wrap:balance]">
-              Live Safety Feed
-            </h1>
-            <span className="inline-flex items-center gap-1.5 rounded-full bg-green-100 px-2.5 py-1 text-xs font-semibold text-green-700">
-              <span
-                className="h-1.5 w-1.5 rounded-full bg-green-500"
-                aria-hidden="true"
-              />
-              Live
+    <div className="min-h-screen">
+      {/* Page header */}
+      <div className="mb-6">
+        <div className="flex flex-wrap items-start justify-between gap-4">
+          <div>
+            <div className="flex items-center gap-3">
+              <h1 className="text-3xl font-bold tracking-tight text-slate-900">
+                Live Safety Feed
+              </h1>
+              <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-2.5 py-1 text-xs font-semibold text-emerald-700 ring-1 ring-emerald-200">
+                <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-emerald-500" />
+                Live
+              </span>
+            </div>
+            <p className="mt-1 text-sm text-slate-500">
+              Community-reported incidents updated in real time
+            </p>
+          </div>
+
+          <div className="flex flex-wrap gap-2">
+            <span className="inline-flex items-center gap-1.5 rounded-full bg-slate-100 px-3 py-1.5 text-xs font-semibold text-slate-700">
+              <span className="h-1.5 w-1.5 rounded-full bg-slate-400" />
+              {reportsLoading ? "—" : approvedCount} approved
+            </span>
+            <span className="inline-flex items-center gap-1.5 rounded-full bg-rose-50 px-3 py-1.5 text-xs font-semibold text-rose-700 ring-1 ring-rose-100">
+              <span className="h-1.5 w-1.5 rounded-full bg-rose-500" />
+              {reportsLoading ? "—" : highSeverityCount} high severity
+            </span>
+            <span className="inline-flex items-center gap-1.5 rounded-full bg-amber-50 px-3 py-1.5 text-xs font-semibold text-amber-700 ring-1 ring-amber-100">
+              <span className="h-1.5 w-1.5 rounded-full bg-amber-400" />
+              {reportsLoading ? "—" : needsReviewCount} needs review
             </span>
           </div>
-          <p className="max-w-2xl text-slate-600">
-            Monitor incidents as they are filed. Updates refresh automatically
-            so you always have the latest status.
-          </p>
-
-          {reportsLoading ? (
-            <div className="flex gap-5 pt-1">
-              {[0, 1, 2].map((i) => (
-                <span
-                  key={i}
-                  className="h-4 w-20 animate-pulse motion-reduce:animate-none motion-reduce:opacity-60 rounded-full bg-slate-100"
-                />
-              ))}
-            </div>
-          ) : (
-            <div className="flex flex-wrap gap-x-5 gap-y-1 pt-1 text-sm">
-              <div className="flex items-center gap-1.5">
-                <span className="text-slate-500">Approved</span>
-                <span className="font-semibold tabular-nums text-slate-900">
-                  {approvedCount}
-                </span>
-              </div>
-              <div className="flex items-center gap-1.5">
-                <span className="text-slate-500">High severity</span>
-                <span className="font-semibold tabular-nums text-rose-700">
-                  {highSeverityCount}
-                </span>
-              </div>
-              <div className="flex items-center gap-1.5">
-                <span className="text-slate-500">Needs review</span>
-                <span className="font-semibold tabular-nums text-amber-700">
-                  {needsReviewCount}
-                </span>
-              </div>
-            </div>
-          )}
         </div>
+      </div>
 
-        <div className="rounded-xl border border-primary-200/60 bg-primary-50/50 p-5">
-          <div className="flex flex-col gap-2">
-            <p className="text-sm font-semibold text-primary-800">
-              Receive alerts for incidents near your location
-            </p>
-            <div className="flex flex-wrap items-center gap-2.5">
-              <label className="grid gap-1 text-sm font-semibold text-slate-700 flex-1 min-w-[200px]">
-                Alert email
-                <input
-                  type="email"
-                  value={subscriptionEmail}
-                  onChange={(e) => setSubscriptionEmail(e.target.value)}
-                  placeholder="you@example.com"
-                  className="w-full rounded-xl border border-slate-200 px-3 py-2 text-sm font-medium text-slate-800 transition focus:border-primary-400 focus:outline-none focus:ring-4 focus:ring-primary-200"
-                />
-              </label>
+      {/* Search */}
+      <div className="relative mb-6">
+        <svg
+          className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400"
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          strokeWidth={2}
+          stroke="currentColor"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"
+          />
+        </svg>
+        <input
+          type="text"
+          placeholder="Search by title, description, or tag…"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          className="w-full rounded-xl border border-slate-200 bg-white py-2.5 pl-10 pr-4 text-sm text-slate-800 shadow-sm placeholder:text-slate-400 focus:border-primary-400 focus:outline-none focus:ring-4 focus:ring-primary-100"
+        />
+      </div>
+
+      {/* Sidebar + content */}
+      <div className="flex flex-col gap-6 lg:flex-row lg:items-start lg:gap-8">
+
+        {/* Sidebar */}
+        <aside className="w-full shrink-0 lg:sticky lg:top-6 lg:w-60">
+          <div className="flex flex-col gap-5 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+
+            {/* Severity */}
+            <div>
+              <p className="mb-2.5 text-xs font-semibold uppercase tracking-wide text-slate-400">
+                Severity
+              </p>
+              <div className="flex flex-wrap gap-1.5">
+                {["all", "high", "medium", "low"].map((s) => (
+                  <button
+                    key={s}
+                    type="button"
+                    onClick={() => setSeverityFilter(s)}
+                    className={[
+                      "rounded-lg px-3 py-1.5 text-xs font-semibold capitalize transition",
+                      severityFilter === s
+                        ? s === "high"
+                          ? "bg-rose-600 text-white shadow-sm"
+                          : s === "medium"
+                          ? "bg-amber-500 text-white shadow-sm"
+                          : s === "low"
+                          ? "bg-emerald-600 text-white shadow-sm"
+                          : "bg-slate-900 text-white shadow-sm"
+                        : "bg-slate-100 text-slate-600 hover:bg-slate-200",
+                    ].join(" ")}
+                  >
+                    {s === "all" ? "All" : s}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div className="h-px bg-slate-100" />
+
+            {/* Status */}
+            <div>
+              <p className="mb-2.5 text-xs font-semibold uppercase tracking-wide text-slate-400">
+                Status
+              </p>
+              <div className="flex flex-col gap-0.5">
+                <button
+                  type="button"
+                  onClick={() => setStatusFilter("all")}
+                  className={[
+                    "rounded-lg px-3 py-1.5 text-left text-xs font-semibold transition",
+                    statusFilter === "all"
+                      ? "bg-slate-900 text-white"
+                      : "text-slate-600 hover:bg-slate-100",
+                  ].join(" ")}
+                >
+                  All statuses
+                </button>
+                {statusOptions.map(({ value, label }) => (
+                  <button
+                    key={value}
+                    type="button"
+                    onClick={() => setStatusFilter(value)}
+                    className={[
+                      "rounded-lg px-3 py-1.5 text-left text-xs font-semibold transition",
+                      statusFilter === value
+                        ? "bg-slate-900 text-white"
+                        : "text-slate-600 hover:bg-slate-100",
+                    ].join(" ")}
+                  >
+                    {label}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div className="h-px bg-slate-100" />
+
+            {/* Sort */}
+            <div>
+              <p className="mb-2.5 text-xs font-semibold uppercase tracking-wide text-slate-400">
+                Sort by
+              </p>
+              <select
+                value={sortBy}
+                onChange={(e) => setSortBy(e.target.value)}
+                className="w-full rounded-xl border border-slate-200 px-3 py-2 text-xs font-medium text-slate-700 focus:border-primary-400 focus:outline-none focus:ring-4 focus:ring-primary-100"
+              >
+                <option value="newest">Newest first</option>
+                <option value="upvotes">Most upvoted</option>
+                <option value="severity">Severity</option>
+              </select>
+            </div>
+
+            <div className="h-px bg-slate-100" />
+
+            {/* Alert subscription */}
+            <div>
+              <p className="mb-1 text-xs font-semibold uppercase tracking-wide text-slate-400">
+                Nearby Alerts
+              </p>
+              <p className="mb-3 text-xs text-slate-500">
+                Get notified about incidents near you
+              </p>
+              <input
+                type="email"
+                value={subscriptionEmail}
+                onChange={(e) => setSubscriptionEmail(e.target.value)}
+                placeholder="you@example.com"
+                className="mb-2 w-full rounded-xl border border-slate-200 px-3 py-2 text-xs font-medium text-slate-800 placeholder:text-slate-400 focus:border-primary-400 focus:outline-none focus:ring-4 focus:ring-primary-100"
+              />
               {subscriptionId ? (
                 <button
                   type="button"
                   onClick={handleUnsubscribeNearby}
                   disabled={unsubscribing}
-                  className="inline-flex items-center justify-center rounded-xl border border-rose-500 bg-rose-600 px-4 py-2 text-sm font-bold text-white shadow-sm transition hover:bg-rose-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-200 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60"
+                  className="w-full rounded-xl border border-rose-200 bg-rose-50 py-2 text-xs font-bold text-rose-700 transition hover:bg-rose-100 disabled:opacity-60"
                 >
                   {unsubscribing ? "Unsubscribing…" : "Unsubscribe"}
                 </button>
@@ -362,224 +427,175 @@ function LiveFeedPage() {
                   type="button"
                   onClick={handleSubscribeNearby}
                   disabled={subscribing || subscriptionLoading}
-                  className="inline-flex items-center justify-center rounded-xl border border-primary-500 bg-primary-600 px-4 py-2 text-sm font-bold text-white shadow-sm transition hover:bg-primary-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-200 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60"
+                  className="w-full rounded-xl bg-primary-600 py-2 text-xs font-bold text-white shadow-sm transition hover:bg-primary-700 disabled:opacity-60"
                 >
-                  {subscribing ? "Subscribing…" : "Subscribe to Nearby Alerts"}
+                  {subscribing ? "Subscribing…" : "Subscribe"}
                 </button>
               )}
+              {subscriptionError && (
+                <p className="mt-1.5 text-xs font-medium text-rose-600" role="alert">
+                  {subscriptionError}
+                </p>
+              )}
+              {subscriptionSuccess && (
+                <p className="mt-1.5 text-xs font-medium text-emerald-700" role="status">
+                  {subscriptionSuccess}
+                </p>
+              )}
             </div>
-            {subscriptionError && (
-              <span
-                className="text-xs font-semibold text-rose-600"
-                role="alert"
-              >
-                {subscriptionError}
-              </span>
-            )}
-            {subscriptionSuccess && (
-              <span
-                className="text-xs font-semibold text-emerald-700"
-                role="status"
-              >
-                {subscriptionSuccess}
-              </span>
-            )}
-          </div>
-        </div>
 
-        <div className="flex flex-wrap items-end gap-3">
-          <div className="grid gap-1.5">
-            <label
-              className="text-sm font-semibold text-slate-700"
-              htmlFor="severity-filter"
-            >
-              Severity
-            </label>
-            <select
-              id="severity-filter"
-              value={severityFilter}
-              onChange={(event) => setSeverityFilter(event.target.value)}
-              className="min-w-[160px] rounded-xl border border-slate-200 px-3 py-2.5 text-sm font-medium text-slate-700 transition focus:border-primary-400 focus:outline-none focus:ring-4 focus:ring-primary-200"
-            >
-              <option value="all">All severities</option>
-              <option value="high">High</option>
-              <option value="medium">Medium</option>
-              <option value="low">Low</option>
-            </select>
-          </div>
+            <div className="h-px bg-slate-100" />
 
-          <div className="grid gap-1.5">
-            <label
-              className="text-sm font-semibold text-slate-700"
-              htmlFor="status-filter"
+            <button
+              type="button"
+              onClick={() => {
+                setSeverityFilter("all");
+                setStatusFilter("approved");
+                setSearchQuery("");
+                setSortBy("newest");
+              }}
+              className="text-xs font-semibold text-slate-400 transition hover:text-slate-700"
             >
-              Status
-            </label>
-            <select
-              id="status-filter"
-              value={statusFilter}
-              onChange={(event) => setStatusFilter(event.target.value)}
-              className="min-w-[160px] rounded-xl border border-slate-200 px-3 py-2.5 text-sm font-medium text-slate-700 transition focus:border-primary-400 focus:outline-none focus:ring-4 focus:ring-primary-200"
-            >
-              <option value="all">All statuses</option>
-              {statusOptions.map(({ value, label }) => (
-                <option key={value} value={value}>
-                  {label}
-                </option>
+              Reset all filters
+            </button>
+          </div>
+        </aside>
+
+        {/* Cards */}
+        <div className="flex-1 min-w-0">
+          {reportsLoading && (
+            <div className="grid gap-4 sm:grid-cols-2">
+              {[...Array(6)].map((_, i) => (
+                <div
+                  key={i}
+                  className="h-44 animate-pulse rounded-2xl bg-slate-100"
+                />
               ))}
-            </select>
-          </div>
+            </div>
+          )}
 
-          <button
-            type="button"
-            className="inline-flex items-center justify-center rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 transition hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-200 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60"
-            onClick={() => {
-              setSeverityFilter("all");
-              setStatusFilter("approved");
-            }}
-            disabled={severityFilter === "all" && statusFilter === "approved"}
-          >
-            Reset
-          </button>
+          {reportsError && (
+            <div
+              className="rounded-2xl border border-rose-200 bg-rose-50 px-5 py-4 text-sm font-medium text-rose-700"
+              role="alert"
+            >
+              Couldn&apos;t reach the live feed. Try refreshing.
+            </div>
+          )}
+
+          {!reportsLoading && filteredIncidents.length === 0 && (
+            <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-slate-300 bg-slate-50 py-16 text-center">
+              <span className="text-3xl">🔍</span>
+              <p className="mt-3 text-sm font-semibold text-slate-600">
+                No incidents match your filters
+              </p>
+              <p className="text-xs text-slate-400">
+                Try broadening your search or changing filters
+              </p>
+            </div>
+          )}
+
+          {!reportsLoading && filteredIncidents.length > 0 && (
+            <>
+              <p className="mb-3 text-xs font-semibold text-slate-400">
+                {filteredIncidents.length} incident
+                {filteredIncidents.length !== 1 ? "s" : ""}
+              </p>
+              <div className="grid gap-4 sm:grid-cols-2">
+                {filteredIncidents.map((incident) => {
+                  const sev = SEVERITY_CONFIG[incident.severity] ?? {
+                    border: "border-l-slate-300",
+                    badge: "bg-slate-100 text-slate-600",
+                    label: "?",
+                  };
+                  const isVoted = votedReports.includes(incident.id);
+                  const tags = Array.isArray(incident.tags) ? incident.tags : [];
+                  const icon = getCategoryIcon(tags);
+                  const reporter = resolveReporterName(incident);
+
+                  return (
+                    <article
+                      key={incident.id}
+                      className={`flex flex-col gap-3 rounded-2xl border border-slate-200 border-l-4 ${sev.border} bg-white p-5 shadow-sm transition duration-150 hover:-translate-y-0.5 hover:shadow-md`}
+                    >
+                      {/* Top row */}
+                      <div className="flex items-start justify-between gap-2">
+                        <div className="flex items-center gap-2">
+                          <span className="text-base leading-none" aria-hidden="true">
+                            {icon}
+                          </span>
+                          <span className={`rounded-full px-2.5 py-0.5 text-xs font-bold ${sev.badge}`}>
+                            {sev.label}
+                          </span>
+                          <span className="rounded-full bg-slate-100 px-2.5 py-0.5 text-xs font-medium capitalize text-slate-600">
+                            {incident.status}
+                          </span>
+                        </div>
+                        <span className="shrink-0 text-xs tabular-nums text-slate-400">
+                          {getRelativeTime(incident.createdAt)}
+                        </span>
+                      </div>
+
+                      {/* Title */}
+                      <h2 className="text-sm font-bold leading-snug text-slate-900 [text-wrap:balance]">
+                        {incident.title}
+                      </h2>
+
+                      {/* Description */}
+                      <p className="line-clamp-2 text-xs leading-relaxed text-slate-500">
+                        {incident.description}
+                      </p>
+
+                      {/* Footer */}
+                      <div className="mt-auto flex items-end justify-between gap-3 pt-1">
+                        <div className="flex min-w-0 flex-col gap-1.5">
+                          {tags.length > 0 && (
+                            <div className="flex flex-wrap gap-1">
+                              {tags.slice(0, 3).map((tag) => (
+                                <span
+                                  key={tag}
+                                  className="rounded-md bg-slate-100 px-2 py-0.5 text-xs font-medium text-slate-600"
+                                >
+                                  {tag}
+                                </span>
+                              ))}
+                            </div>
+                          )}
+                          <span className="truncate text-xs text-slate-400">
+                            {incident.isAnonymous ? "Anonymous" : `by ${reporter}`}
+                          </span>
+                        </div>
+
+                        <button
+                          type="button"
+                          onClick={() => handleUpvote(incident)}
+                          disabled={isVoted}
+                          className={[
+                            "inline-flex shrink-0 items-center gap-1.5 rounded-xl px-3 py-1.5 text-xs font-bold transition",
+                            isVoted
+                              ? "cursor-not-allowed bg-slate-100 text-slate-400"
+                              : "bg-primary-50 text-primary-700 ring-1 ring-primary-200 hover:bg-primary-100",
+                          ].join(" ")}
+                        >
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 20 20"
+                            fill="currentColor"
+                            className="h-3.5 w-3.5"
+                          >
+                            <path d="M1 8.25a1.25 1.25 0 1 1 2.5 0v7.5a1.25 1.25 0 0 1-2.5 0v-7.5ZM11 3V1.7c0-.268.14-.526.395-.607A2 2 0 0 1 14 3c0 .995-.182 1.948-.514 2.826-.204.54.166 1.174.744 1.174h2.52c1.243 0 2.261 1.01 2.146 2.247a23.864 23.864 0 0 1-1.341 5.974C17.153 16.323 16.072 17 14.9 17h-3.192a3 3 0 0 1-1.341-.317l-2.734-1.381A1.15 1.15 0 0 1 7 14.25v-6.292a1 1 0 0 1 .448-.843L7.9 6.8a1.75 1.75 0 0 0 .692-1.4V3Z" />
+                          </svg>
+                          {upvoteMap[incident.id] ?? incident.upvotes ?? 0}
+                        </button>
+                      </div>
+                    </article>
+                  );
+                })}
+              </div>
+            </>
+          )}
         </div>
-      </header>
-
-      <section className="flex flex-col gap-6">
-        {reportsLoading && (
-          <p className="text-slate-600">Loading live incident feed…</p>
-        )}
-        {reportsError && (
-          <p
-            className="rounded-2xl border border-rose-300/60 bg-rose-50 px-4 py-3 text-sm font-medium text-rose-800"
-            role="alert"
-          >
-            We couldn&apos;t reach the live feed right now. Please try
-            refreshing.
-          </p>
-        )}
-
-        {!reportsLoading &&
-          filteredIncidents.map((incident) => {
-            const reporterDisplay = resolveReporterName(incident);
-            const tags = Array.isArray(incident.tags) ? incident.tags : [];
-            const isVoted = votedReports.includes(incident.id);
-            return (
-              <article
-                key={incident.id}
-                className={[
-                  baseCardClasses,
-                  severityStyles[incident.severity]?.card ??
-                    severityStyles.default.card,
-                ]
-                  .filter(Boolean)
-                  .join(" ")}
-              >
-                <div className="flex flex-wrap items-start justify-between gap-4">
-                  <div className="space-y-2">
-                    <span
-                      className={[
-                        "inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold",
-                        severityStyles[incident.severity]?.type,
-                      ]
-                        .filter(Boolean)
-                        .join(" ")}
-                    >
-                      {incident.status}
-                    </span>
-                    <h2 className="text-xl font-semibold text-slate-900 [text-wrap:balance]">
-                      {incident.title}
-                    </h2>
-                  </div>
-                  <span className="text-sm font-medium text-slate-500 tabular-nums">
-                    {getRelativeTime(incident.createdAt)}
-                  </span>
-                </div>
-
-                <span
-                  className={[
-                    "inline-flex w-fit items-center gap-2 rounded-full border px-3 py-1 text-xs font-semibold",
-                    incident.isAnonymous
-                      ? "border-slate-200 bg-slate-50 text-slate-600"
-                      : "border-emerald-200 bg-emerald-50 text-emerald-700",
-                  ]
-                    .filter(Boolean)
-                    .join(" ")}
-                >
-                  {incident.isAnonymous
-                    ? "Submitted anonymously"
-                    : `Reported by ${reporterDisplay}`}
-                </span>
-
-                <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
-                  <p className="flex-1 text-base text-slate-700 [text-wrap:pretty]">
-                    {incident.description}
-                  </p>
-                  <div className="flex shrink-0 items-center gap-2">
-                    <button
-                      type="button"
-                      className={[
-                        "inline-flex items-center justify-center rounded-xl border px-4 py-1.5 text-sm font-semibold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-200 focus-visible:ring-offset-2",
-                        isVoted
-                          ? "cursor-not-allowed border-slate-200 bg-slate-100 text-slate-500"
-                          : "border-primary-500 bg-primary-600 text-white hover:bg-primary-700",
-                      ]
-                        .filter(Boolean)
-                        .join(" ")}
-                      onClick={() => handleUpvote(incident)}
-                      disabled={isVoted}
-                    >
-                      {isVoted ? "Upvoted" : "Upvote"}
-                    </button>
-                    <span className="min-w-[2ch] text-center text-sm font-bold tabular-nums text-slate-700">
-                      {upvoteMap[incident.id] ?? incident.upvotes ?? 0}
-                    </span>
-                  </div>
-                </div>
-
-                <footer
-                  className={[
-                    "flex flex-wrap items-center justify-between gap-4",
-                    severityStyles[incident.severity]?.footer,
-                  ]
-                    .filter(Boolean)
-                    .join(" ")}
-                >
-                  <div className="flex flex-wrap gap-2">
-                    {tags.map((tag) => (
-                      <span
-                        key={tag}
-                        className={[
-                          "inline-flex items-center rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-700",
-                          severityStyles[incident.severity]?.tag,
-                        ]
-                          .filter(Boolean)
-                          .join(" ")}
-                      >
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
-                  <span
-                    className={[
-                      "text-xs font-bold text-slate-900",
-                      severityStyles[incident.severity]?.severity,
-                    ]
-                      .filter(Boolean)
-                      .join(" ")}
-                  >
-                    {(incident.severity || "Unknown").toUpperCase()}
-                  </span>
-                </footer>
-              </article>
-            );
-          })}
-
-        {!reportsLoading && filteredIncidents.length === 0 && (
-          <p className="rounded-2xl border border-dashed border-slate-300 bg-slate-50 px-6 py-10 text-center text-sm text-slate-600">
-            No incidents match the selected filters. Try broadening your search.
-          </p>
-        )}
-      </section>
+      </div>
     </div>
   );
 }
